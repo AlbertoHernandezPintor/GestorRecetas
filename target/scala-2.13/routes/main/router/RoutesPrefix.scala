@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/PlayExample/conf/routes
-// @DATE:Wed Dec 09 19:25:18 CET 2020
+// @SOURCE:/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestorRecetas/GestorRecetas/conf/routes
+// @DATE:Sat Dec 19 11:33:59 CET 2020
 
 
 package router {

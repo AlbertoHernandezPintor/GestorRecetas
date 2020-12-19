@@ -73,3 +73,10 @@ compile
 run
 h2-browser
 run
+compile
+run
+clear
+compile
+riun
+run
+clear
