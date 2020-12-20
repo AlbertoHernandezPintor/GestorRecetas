@@ -1,0 +1,6 @@
+[0m[[0m[31merror[0m] [0m[0m/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/app/controllers/RecipeController.java:177:1:  error: not a statement[0m
+[0m[[0m[31merror[0m] [0m[0m            ArrayList<Recipe> recipesFinded = new ArrayList<>();s[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/app/controllers/RecipeController.java:177:1:  error: ';' expected[0m
+[0m[[0m[31merror[0m] [0m[0m            ArrayList<Recipe> recipesFinded = new ArrayList<>();s[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                 ^2 errors[0m

@@ -1,0 +1,17 @@
+@(recipe: Recipe)
+<recipe>
+    <name>@recipe.getName()</name>
+    <type>@recipe.getType()</type>
+    <time>@recipe.getTime()</time>
+    <difficulty>@recipe.getDifficulty()</difficulty>
+    <ingredients>
+        @for(i <- recipe.getIngredients()){
+            @ingredient(i)
+        }
+    </ingredients>
+    <steps>
+        @for(s <- recipe.getSteps()){
+            @step(s)
+        }
+    </steps>
+</recipe>
