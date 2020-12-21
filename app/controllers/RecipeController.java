@@ -28,9 +28,10 @@ public class RecipeController extends Controller {
 
         if (form.hasErrors()) {
             return Results.status(CONFLICT, form.errorsAsJson());
-        } else {
+        } else { //Este else se puede borrar
             recipe = form.get();
 
+            /*Mejor meter en un método que se llamaría en el if de la línea 43*/
             for (Recipe currentRecipe : Recipe.recipesCollection) {
                 if (recipe.getName().equals(currentRecipe.getName())) {
                     find = true;

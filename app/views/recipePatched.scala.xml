@@ -1,0 +1,6 @@
+@(recipe: Recipe)
+        <?xml version="1.0" encoding="utf-8" ?>
+<content>
+    <success>true</success>
+    <message>La receta @recipe.getName() ha sido modificada con éxito</message>
+</content>
