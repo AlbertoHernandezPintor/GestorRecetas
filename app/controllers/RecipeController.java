@@ -55,12 +55,11 @@ public class RecipeController extends Controller {
             }
 
             if(typeFinded) {
+                Recipe.recipesCollection.add(recipe); //Se elimina línea repetida en las dos condiciones del if-else
                 if (request.accepts("application/xml")) {
-                    Recipe.recipesCollection.add(recipe);
                     Content content = recipeCreated.render(recipe);
                     response = Results.ok(content);
                 } else if (request.accepts("application/json")) {
-                    Recipe.recipesCollection.add(recipe);
                     ObjectNode result = Json.newObject();
                     result.put("success", true);
                     result.put("message", "La receta " + recipe.getName() + " ha sido creada con éxito");
@@ -91,11 +90,10 @@ public class RecipeController extends Controller {
 
         Optional<String> recipeName = request.queryString("name");
 
-        if(recipeName.isPresent()) {
+        if(recipeName.isPresent() && !"".equals(recipeName.get())) { //Comprobar "" porque si no puede hacer búsquedas de nombres en blanco
             Recipe recipeFinded = new Recipe();
 
             String name = recipeName.get();
-
             for (Recipe currentRecipe: Recipe.recipesCollection) {
                 if (name.equals(currentRecipe.getName())) {
                     find = true;
@@ -199,7 +197,7 @@ public class RecipeController extends Controller {
 
         Optional<String> recipeName = request.queryString("name");
 
-        if(recipeName.isPresent()) {
+        if(recipeName.isPresent() && !"".equals(recipeName.get())) {
             Recipe recipeFinded = new Recipe();
 
             String name = recipeName.get();
@@ -218,12 +216,11 @@ public class RecipeController extends Controller {
                 result.put("message", "La receta " + recipeName.get() + " no existe");
                 response = Results.notFound(result);
             } else {
+                Recipe.recipesCollection.remove(recipeFinded);
                 if (request.accepts("application/xml")) {
-                    Recipe.recipesCollection.remove(recipeFinded);
                     Content content = recipeDeleted.render(recipeFinded);
                     response = Results.ok(content);
                 } else if (request.accepts("application/json")) {
-                    Recipe.recipesCollection.remove(recipeFinded);
                     ObjectNode result = Json.newObject();
                     result.put("success", true);
                     result.put("message", "La receta " + recipeFinded.getName() + " ha sido eliminada con éxito");
@@ -305,25 +302,11 @@ public class RecipeController extends Controller {
                 }
             }
         } else {
-            if(Recipe.recipesCollection.size() > 0) {
-                if (request.accepts("application/xml")) {
-                    Content content = recipes.render(Recipe.recipesCollection);
-                    response = Results.ok(content);
-                } else if (request.accepts("application/json")) {
-                    JsonNode result = Json.toJson(Recipe.recipesCollection);
-                    response = Results.ok(result);
-                } else {
-                    ObjectNode result = Json.newObject();
-                    result.put("success", false);
-                    result.put("message", "Formato no soportado");
-                    response = Results.badRequest(result);
-                }
-            } else {
-                ObjectNode result = Json.newObject();
-                result.put("success", false);
-                result.put("message", "No se ha encontrado ninguna receta");
-                response = Results.notFound(result);
-            }
+            //El if que había aquí sobraba
+            ObjectNode result = Json.newObject();
+            result.put("success", false);
+            result.put("message", "El parámetro establecido no es válido"); //Se cambia el mensaje que devuelve
+            response = Results.notFound(result);
         }
 
         return response;
