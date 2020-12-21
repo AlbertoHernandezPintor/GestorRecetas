@@ -2,18 +2,22 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import io.ebean.Model;
+import javax.persistence.*;
 
-public class Recipe {
+@Entity
+public class Recipe extends Model{
 
     public static ArrayList<Recipe> recipesCollection = new ArrayList<>();
     public static ArrayList<String> typesCollection = new ArrayList<>(Arrays.asList("vegetariano", "vegano", "india"));
 
+    @Id
     private String name;
     private String type;
     private String time;
     private String difficulty;
-    private Ingredient[] ingredients;
-    private String[] steps;
+    //private Ingredient[] ingredients;
+    //private String[] steps;
 
     public String getName() {
         return name;
@@ -47,19 +51,19 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public Ingredient[] getIngredients() {
+    /*public Ingredient[] getIngredients() {
         return ingredients;
     }
 
     public void setIngredients(Ingredient[] ingredients) {
         this.ingredients = ingredients;
-    }
+    }*/
 
-    public String[] getSteps() {
+    /*public String[] getSteps() {
         return steps;
     }
 
     public void setSteps(String[] steps) {
         this.steps = steps;
-    }
+    }*/
 }

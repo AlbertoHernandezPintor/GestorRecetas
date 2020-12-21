@@ -56,6 +56,7 @@ public class RecipeController extends Controller {
 
             if(typeFinded) {
                 Recipe.recipesCollection.add(recipe); //Se elimina línea repetida en las dos condiciones del if-else
+                recipe.save();
                 if (request.accepts("application/xml")) {
                     Content content = recipeCreated.render(recipe);
                     response = Results.ok(content);
