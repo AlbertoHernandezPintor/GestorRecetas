@@ -1,0 +1,6 @@
+@(newType: String)
+<?xml version="1.0" encoding="utf-8" ?>
+<content>
+    <success>true</success>
+    <message>El tipo @newType ha sido añadido con éxito</message>
+</content>
