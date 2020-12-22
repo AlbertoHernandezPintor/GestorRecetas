@@ -1,0 +1,66 @@
+2020-12-22 17:50:07 jdbc[24]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PLAY_EVOLUTIONS" no encontrada
+Table "PLAY_EVOLUTIONS" not found; SQL statement:
+select id, hash, apply_script, revert_script, state, last_problem from play_evolutions where state like 'applying_%' [42102-200]
+2020-12-22 17:52:18 jdbc[33]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "DELETE FROM RECIPE_INGREDIENT 
+DELETE FROM[*] INGREDIENT 
+DELETE FROM RECIPE"
+Syntax error in SQL statement "DELETE FROM RECIPE_INGREDIENT 
+DELETE FROM[*] INGREDIENT 
+DELETE FROM RECIPE"; SQL statement:
+DELETE FROM RECIPE_INGREDIENT 
+DELETE FROM INGREDIENT 
+DELETE FROM RECIPE [42000-200]
+2020-12-22 17:52:42 jdbc[33]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "DELETE FROM RECIPE_INGREDIENT
+DELETE FROM[*] INGREDIENT
+DELETE FROM RECIPE"
+Syntax error in SQL statement "DELETE FROM RECIPE_INGREDIENT
+DELETE FROM[*] INGREDIENT
+DELETE FROM RECIPE"; SQL statement:
+DELETE FROM RECIPE_INGREDIENT
+DELETE FROM INGREDIENT
+DELETE FROM RECIPE [42000-200]
+2020-12-22 17:54:08 jdbc[33]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SLECT[*] * FROM INGREDIENT"; se esperaba "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"
+Syntax error in SQL statement "SLECT[*] * FROM INGREDIENT"; expected "SET, SAVEPOINT, SCRIPT, SHUTDOWN, SHOW"; SQL statement:
+SLECT * FROM INGREDIENT [42001-200]
+2020-12-22 18:10:39 jdbc[33]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * GROM[*] RECIPE"
+Syntax error in SQL statement "SELECT * GROM[*] RECIPE"; SQL statement:
+SELECT * GROM RECIPE [42000-200]
+2020-12-22 18:24:34 jdbc[33]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "DELETE FROM RECIPE_INGREDIENT
+DELETE FROM[*] INGREDIENT
+DELETE FROM RECIPE"
+Syntax error in SQL statement "DELETE FROM RECIPE_INGREDIENT
+DELETE FROM[*] INGREDIENT
+DELETE FROM RECIPE"; SQL statement:
+DELETE FROM RECIPE_INGREDIENT
+DELETE FROM INGREDIENT
+DELETE FROM RECIPE [42000-200]
+2020-12-22 18:24:37 jdbc[33]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "DELETE FROM RECIPE_INGREDIENT
+DELETE FROM[*] INGREDIENT
+DELETE FROM RECIPE"
+Syntax error in SQL statement "DELETE FROM RECIPE_INGREDIENT
+DELETE FROM[*] INGREDIENT
+DELETE FROM RECIPE"; SQL statement:
+DELETE FROM RECIPE_INGREDIENT
+DELETE FROM INGREDIENT
+DELETE FROM RECIPE [42000-200]
+2020-12-22 18:24:40 jdbc[33]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "DELETE FROM RECIPE_INGREDIENT
+DELETE FROM[*] INGREDIENT
+DELETE FROM RECIPE"
+Syntax error in SQL statement "DELETE FROM RECIPE_INGREDIENT
+DELETE FROM[*] INGREDIENT
+DELETE FROM RECIPE"; SQL statement:
+DELETE FROM RECIPE_INGREDIENT
+DELETE FROM INGREDIENT
+DELETE FROM RECIPE [42000-200]
+2020-12-22 18:53:41 jdbc[33]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "C[*]"; se esperaba "COMMIT, CREATE, CALL, CHECKPOINT, COMMENT"
+Syntax error in SQL statement "C[*]"; expected "COMMIT, CREATE, CALL, CHECKPOINT, COMMENT"; SQL statement:
+C [42001-200]

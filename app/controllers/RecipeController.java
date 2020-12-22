@@ -3,6 +3,8 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import io.ebean.DuplicateKeyException;
+import models.Ingredient;
 import models.Recipe;
 import play.libs.Json;
 import play.mvc.*;
@@ -11,6 +13,7 @@ import play.data.FormFactory;
 import play.twirl.api.Content;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import views.xml.*;
 
@@ -28,58 +31,58 @@ public class RecipeController extends Controller {
 
         if (form.hasErrors()) {
             return Results.status(CONFLICT, form.errorsAsJson());
-        } else { //Este else se puede borrar
-            recipe = form.get();
+        }
+        recipe = form.get();
 
-            /*Mejor meter en un método que se llamaría en el if de la línea 43*/
-            for (Recipe currentRecipe : Recipe.recipesCollection) {
-                if (recipe.getName().equals(currentRecipe.getName())) {
-                    find = true;
-                    break;
-                }
+        boolean typeFinded = false;
+        for(int i = 0; i < Recipe.typesCollection.size(); i++) {
+            if(Recipe.typesCollection.get(i).equals(recipe.getType().toLowerCase())) {
+                typeFinded = true;
+                break;
             }
         }
 
-        if (find) {
-            ObjectNode result = Json.newObject();
-            result.put("success", false);
-            result.put("message", "La receta " + recipe.getName() + " ya existe");
-            response = Results.status(CONFLICT, result);
-        } else {
-            boolean typeFinded = false;
-            for(int i = 0; i < Recipe.typesCollection.size(); i++) {
-                if(Recipe.typesCollection.get(i).equals(recipe.getType().toLowerCase())) {
-                    typeFinded = true;
-                    break;
+        if(typeFinded) {
+            //si el ingrediente ya existe, se actualiza para que se actualice la relación N:M
+            for(Ingredient ingredient : recipe.getIngredients()) {
+                if(null != Ingredient.selectIngredient(ingredient.getName())) {
+                    ingredient.update();
                 }
             }
 
-            if(typeFinded) {
-                Recipe.recipesCollection.add(recipe); //Se elimina línea repetida en las dos condiciones del if-else
+            //Genera el JSON con los steps
+            recipe.setStepsJson();
+            try {
                 recipe.save();
-                if (request.accepts("application/xml")) {
-                    Content content = recipeCreated.render(recipe);
-                    response = Results.ok(content);
-                } else if (request.accepts("application/json")) {
-                    ObjectNode result = Json.newObject();
-                    result.put("success", true);
-                    result.put("message", "La receta " + recipe.getName() + " ha sido creada con éxito");
-                    response = Results.ok(result);
-                } else {
-                    ObjectNode result = Json.newObject();
-                    result.put("success", false);
-                    result.put("message", "Formato no soportado");
-                    response = Results.badRequest(result);
-                }
+            } catch(DuplicateKeyException e) {
+                ObjectNode result = Json.newObject();
+                result.put("success", false);
+                result.put("message", "La receta " + recipe.getName() + " ya existe");
+                return Results.status(CONFLICT, result);
+            }
+
+            if (request.accepts("application/xml")) {
+                Content content = recipeCreated.render(recipe);
+                response = Results.ok(content);
+            } else if (request.accepts("application/json")) {
+                ObjectNode result = Json.newObject();
+                result.put("success", true);
+                result.put("message", "La receta " + recipe.getName() + " ha sido creada con éxito");
+                response = Results.ok(result);
             } else {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", "Tipo de la receta no permitido, a continuación se muestran los tipos permitidos");
-                for (int i = 0; i < Recipe.typesCollection.size(); i++) {
-                    result.put("tipo " + (i+1), Recipe.typesCollection.get(i));
-                }
+                result.put("message", "Formato no soportado");
                 response = Results.badRequest(result);
             }
+        } else {
+            ObjectNode result = Json.newObject();
+            result.put("success", false);
+            result.put("message", "Tipo de la receta no permitido, a continuación se muestran los tipos permitidos");
+            for (int i = 0; i < Recipe.typesCollection.size(); i++) {
+                result.put("tipo " + (i+1), Recipe.typesCollection.get(i));
+            }
+            response = Results.badRequest(result);
         }
 
         return response;
@@ -95,15 +98,10 @@ public class RecipeController extends Controller {
             Recipe recipeFinded = new Recipe();
 
             String name = recipeName.get();
-            for (Recipe currentRecipe: Recipe.recipesCollection) {
-                if (name.equals(currentRecipe.getName())) {
-                    find = true;
-                    recipeFinded = currentRecipe;
-                    break;
-                }
-            }
 
-            if(!find) {
+            recipeFinded = Recipe.selectRecipe(name);
+
+            if(null == recipeFinded) {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
                 result.put("message", "La receta " + recipeName.get() + " no existe");
@@ -143,13 +141,10 @@ public class RecipeController extends Controller {
             return Results.status(CONFLICT, form.errorsAsJson());
         }
         recipe = form.get();
-        for (int i = 0; i < Recipe.recipesCollection.size(); i++) {
-            if (recipe.getName().equals(Recipe.recipesCollection.get(i).getName())) {
-                counter = i;
-                break;
-            }
-        }
-        if (counter != -1) {
+
+        Recipe recipeFinded = Recipe.selectRecipe(recipe.getName());
+
+        if (null != recipeFinded) {
             boolean typeFinded = false;
             for(int i = 0; i < Recipe.typesCollection.size(); i++) {
                 if(Recipe.typesCollection.get(i).equals(recipe.getType().toLowerCase())) {
@@ -158,7 +153,8 @@ public class RecipeController extends Controller {
                 }
             }
             if(typeFinded) {
-                Recipe.recipesCollection.set(counter, recipe);
+                recipe.setStepsJson();
+                recipe.update();
                 if (request.accepts("application/xml")) {
                     Content content = recipePatched.render(recipe);
                     response = Results.ok(content);
@@ -194,30 +190,20 @@ public class RecipeController extends Controller {
 
     public Result deleteRecipe(Http.Request request) {
         Result response;
-        boolean find = false;
-
         Optional<String> recipeName = request.queryString("name");
 
         if(recipeName.isPresent() && !"".equals(recipeName.get())) {
-            Recipe recipeFinded = new Recipe();
-
             String name = recipeName.get();
 
-            for (Recipe currentRecipe: Recipe.recipesCollection) {
-                if (name.equals(currentRecipe.getName())) {
-                    find = true;
-                    recipeFinded = currentRecipe;
-                    break;
-                }
-            }
+            Recipe recipeFinded = Recipe.selectRecipe(name);
 
-            if(!find) {
+            if(null == recipeFinded) {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
                 result.put("message", "La receta " + recipeName.get() + " no existe");
                 response = Results.notFound(result);
             } else {
-                Recipe.recipesCollection.remove(recipeFinded);
+                recipeFinded.delete();
                 if (request.accepts("application/xml")) {
                     Content content = recipeDeleted.render(recipeFinded);
                     response = Results.ok(content);
@@ -252,38 +238,23 @@ public class RecipeController extends Controller {
         Optional<String> recipeDifficulty = request.queryString("difficulty");
 
         if(recipeType.isPresent() || recipeTime.isPresent() || recipeDifficulty.isPresent()) {
-            ArrayList<Recipe> recipesFinded = new ArrayList<>();
+            List<Recipe> recipesFinded = new ArrayList<>();
 
             if(recipeType.isPresent()) {
                 String type = recipeType.get();
 
-                for (Recipe currentRecipe: Recipe.recipesCollection) {
-                    if (type.equals(currentRecipe.getType())) {
-                        find = true;
-                        recipesFinded.add(currentRecipe);
-                    }
-                }
+                recipesFinded = Recipe.selectRecipesList("TYPE", type);
             } else if (recipeTime.isPresent()) {
                 String time = recipeTime.get();
 
-                for (Recipe currentRecipe: Recipe.recipesCollection) {
-                    if (time.equals(currentRecipe.getTime())) {
-                        find = true;
-                        recipesFinded.add(currentRecipe);
-                    }
-                }
+                recipesFinded = Recipe.selectRecipesList("time", time);
             } else {
                 String difficulty = recipeDifficulty.get();
 
-                for (Recipe currentRecipe: Recipe.recipesCollection) {
-                    if (difficulty.equals(currentRecipe.getDifficulty())) {
-                        find = true;
-                        recipesFinded.add(currentRecipe);
-                    }
-                }
+                recipesFinded = Recipe.selectRecipesList("difficulty", difficulty);
             }
 
-            if(!find) {
+            if(null == recipesFinded || recipesFinded.isEmpty()) {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
                 result.put("message", "No se ha encontrado ninguna receta para los parámetros establecidos");
