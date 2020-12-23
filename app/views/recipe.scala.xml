@@ -4,11 +4,16 @@
     <type>@recipe.getType()</type>
     <time>@recipe.getTime()</time>
     <difficulty>@recipe.getDifficulty()</difficulty>
-    @*<ingredients>
+    <ingredients>
         @for(i <- recipe.getIngredients()){
             @ingredient(i)
         }
-    </ingredients>*@
+    </ingredients>
+    <allergens>
+        @for(a <- recipe.getAllergens()){
+            @allergen(a)
+        }
+    </allergens>
     @*<steps>
         @for(s <- recipe.getSteps()){
             @step(s)

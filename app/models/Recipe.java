@@ -25,12 +25,23 @@ public class Recipe extends Model{
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Allergen> allergens;
+
     private List<String> steps;
 
     private String stepsJson;
 
     public Recipe() {
 
+    }
+
+    public List<Allergen> getAllergens() {
+        return allergens;
+    }
+
+    public void setAllergens(List<Allergen> allergens) {
+        this.allergens = allergens;
     }
 
     public String getName() {

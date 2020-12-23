@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.ebean.DuplicateKeyException;
+import models.Allergen;
 import models.Ingredient;
 import models.Recipe;
 import play.libs.Json;
@@ -50,14 +51,16 @@ public class RecipeController extends Controller {
                 }
             }
 
+            //si el alérgeno ya existe, se actualiza para que se actualice la relación N:M
+            for(Allergen allergen : recipe.getAllergens()) {
+                if(null != Allergen.selectAllergen(allergen.getName())) {
+                    allergen.update();
+                }
+            }
+
             //Genera el JSON con los steps
             recipe.setStepsJson();
             try {
-                //Convertimos los alérgenos en un JSON para que los alérgenos se almacenen coreectamente en BBDD
-                for(Ingredient i : recipe.getIngredients()) {
-                    i.setAllergensJson();
-                }
-
                 recipe.save();
             } catch(DuplicateKeyException e) {
                 ObjectNode result = Json.newObject();
@@ -105,6 +108,12 @@ public class RecipeController extends Controller {
             String name = recipeName.get();
 
             recipeFinded = Recipe.selectRecipe(name);
+
+            List<List<String>> allergens = new ArrayList<>();
+            //Convertimos los alérgenos en un array de string para que los alérgenos se puedan mostrar
+            for(Ingredient i : recipeFinded.getIngredients()) {
+                //allergens.add(i.setAllergensUndoJson());
+            }
 
             if (request.accepts("application/xml")) {
                 Content content = recipe.render(recipeFinded);

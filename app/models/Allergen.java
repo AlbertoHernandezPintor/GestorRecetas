@@ -2,22 +2,22 @@ package models;
 
 import io.ebean.Finder;
 import io.ebean.Model;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import java.util.List;
 
 @Entity
-public class Ingredient extends Model {
-    public static final Finder<Long, Ingredient> find = new Finder<>(Ingredient.class);
+public class Allergen extends Model {
+
+    public static final Finder<Long, Allergen> find = new Finder<>(Allergen.class);
 
     @Id
     private String name;
 
-    private String type;
+    private String diseases;
 
-    @ManyToMany(mappedBy = "ingredients")
+    @ManyToMany(mappedBy = "allergens")
     public List<Recipe> recipes;
 
     public String getName() {
@@ -28,15 +28,15 @@ public class Ingredient extends Model {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getDiseases() {
+        return diseases;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDiseases(String diseases) {
+        this.diseases = diseases;
     }
 
-    public static Ingredient selectIngredient(String name) {
+    public static Allergen selectAllergen(String name) {
         return find.query().where().eq("name", name).findOne();
     }
 }

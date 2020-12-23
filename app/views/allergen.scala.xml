@@ -1,2 +1,5 @@
-@(allergen: String)
-<allergen>@allergen</allergen>
+@(allergen: Allergen)
+<allergen>
+    <name>@allergen.getName()</name>
+    <diseases>@allergen.getDiseases()</diseases>
+</allergen>
