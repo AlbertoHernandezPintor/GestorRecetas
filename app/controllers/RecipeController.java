@@ -53,6 +53,11 @@ public class RecipeController extends Controller {
             //Genera el JSON con los steps
             recipe.setStepsJson();
             try {
+                //Convertimos los alérgenos en un JSON para que los alérgenos se almacenen coreectamente en BBDD
+                for(Ingredient i : recipe.getIngredients()) {
+                    i.setAllergensJson();
+                }
+
                 recipe.save();
             } catch(DuplicateKeyException e) {
                 ObjectNode result = Json.newObject();
@@ -95,30 +100,23 @@ public class RecipeController extends Controller {
         Optional<String> recipeName = request.queryString("name");
 
         if(recipeName.isPresent() && !"".equals(recipeName.get())) { //Comprobar "" porque si no puede hacer búsquedas de nombres en blanco
-            Recipe recipeFinded = new Recipe();
+            Recipe recipeFinded;
 
             String name = recipeName.get();
 
             recipeFinded = Recipe.selectRecipe(name);
 
-            if(null == recipeFinded) {
+            if (request.accepts("application/xml")) {
+                Content content = recipe.render(recipeFinded);
+                response = Results.ok(content);
+            } else if (request.accepts("application/json")) {
+                JsonNode result = Json.toJson(recipeFinded);
+                response = Results.ok(result);
+            } else {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", "La receta " + recipeName.get() + " no existe");
-                response = Results.notFound(result);
-            } else {
-                if (request.accepts("application/xml")) {
-                    Content content = recipe.render(recipeFinded);
-                    response = Results.ok(content);
-                } else if (request.accepts("application/json")) {
-                    JsonNode result = Json.toJson(recipeFinded);
-                    response = Results.ok(result);
-                } else {
-                    ObjectNode result = Json.newObject();
-                    result.put("success", false);
-                    result.put("message", "Formato no soportado");
-                    response = Results.badRequest(result);
-                }
+                result.put("message", "Formato no soportado");
+                response = Results.badRequest(result);
             }
         } else {
             ObjectNode result = Json.newObject();

@@ -1,14 +1,14 @@
 package models;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.Finder;
 import io.ebean.Model;
+import play.libs.Json;
 
 import javax.persistence.Entity;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Ingredient extends Model {
@@ -16,11 +16,13 @@ public class Ingredient extends Model {
 
     @Id
     private String name;
-    private ArrayList<String> allergens;
+    private List<String> allergens;
     private String type;
 
     @ManyToMany(mappedBy = "ingredients")
     public List<Recipe> recipes;
+
+    private String allergensJson;
 
     public String getName() {
         return name;
@@ -30,12 +32,24 @@ public class Ingredient extends Model {
         this.name = name;
     }
 
-    public ArrayList<String> getAllergens() {
+    public List<String> getAllergens() {
         return allergens;
     }
 
-    public void setAllergens(ArrayList<String> allergens) {
+    public void setAllergens(List<String> allergens) {
         this.allergens = allergens;
+    }
+
+    public String getAllergensJson() {
+        return allergensJson;
+    }
+
+    public void setAllergensJson() {
+        ObjectNode result = Json.newObject();
+        for(int i = 0; i < this.allergens.size(); i++) {
+            result.put("Alérgeno " + (i+1), this.allergens.get(i));
+        }
+        this.allergensJson = result.toString();
     }
 
     public String getType() {

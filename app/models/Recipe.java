@@ -88,7 +88,7 @@ public class Recipe extends Model{
     public void setStepsJson() {
         ObjectNode result = Json.newObject();
         for(int i = 0; i < this.steps.size(); i++) {
-            result.put(Integer.toString(i), this.steps.get(i));
+            result.put("Paso " + (i+1), this.steps.get(i));
         }
         this.stepsJson = result.toString();
     }
