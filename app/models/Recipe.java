@@ -1,13 +1,12 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.Finder;
 import io.ebean.Model;
-import play.libs.Json;
+import play.data.validation.Constraints;
+import play.data.validation.Constraints.Pattern;
+import play.data.validation.Constraints.Required;
+import validators.*;
 
 import javax.persistence.*;
 
@@ -15,19 +14,32 @@ import javax.persistence.*;
 public class Recipe extends Model {
     public static final Finder<Long, Recipe> find = new Finder<>(Recipe.class);
 
+    @Required(message="El nombre de la receta es obligatorio")
     @Id
     private String name;
+
+    @Required(message="El tipo de la receta es obligatorio")
     private String type;
+
+    @Required(message="El tiempo de la receta es obligatorio")
+    @Pattern(value = "^[0-9]+$", message = "El tiempo tiene que ser un número entero")
     private String time;
+
+    @Required(message="La dificultad de la receta es obligatoria")
     private String difficulty;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @Required(message="La receta tiene que contener al menos un ingrediente")
+    @Constraints.ValidateWith(IngredientValidator.class)
     private List<Ingredient> ingredients;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @Constraints.ValidateWith(AllergenValidator.class)
     private List<Allergen> allergens;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    @Required(message="La receta tiene que contener al menos un paso")
+    @Constraints.ValidateWith(StepValidator.class)
     private List<Step> steps;
 
     public Recipe() {
