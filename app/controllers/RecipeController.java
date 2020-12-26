@@ -1,19 +1,19 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.DuplicateKeyException;
 import models.Allergen;
 import models.Ingredient;
 import models.Recipe;
+import models.Type;
 import play.libs.Json;
 import play.mvc.*;
 import play.data.Form;
 import play.data.FormFactory;
 import play.twirl.api.Content;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import views.xml.*;
@@ -36,8 +36,10 @@ public class RecipeController extends Controller {
         recipe = form.get();
 
         boolean typeFinded = false;
-        for(int i = 0; i < Recipe.typesCollection.size(); i++) {
-            if(Recipe.typesCollection.get(i).equals(recipe.getType().toLowerCase())) {
+        List<Type> recipeTypes;
+        recipeTypes = Type.selectTypesList();
+        for(Type type : recipeTypes) {
+            if(type.getName().equals(recipe.getType())) {
                 typeFinded = true;
                 break;
             }
@@ -58,8 +60,6 @@ public class RecipeController extends Controller {
                 }
             }
 
-            //Genera el JSON con los steps
-            recipe.setStepsJson();
             try {
                 recipe.save();
             } catch(DuplicateKeyException e) {
@@ -84,12 +84,14 @@ public class RecipeController extends Controller {
                 response = Results.badRequest(result);
             }
         } else {
+            ArrayNode jsonArray = Json.newArray();
             ObjectNode result = Json.newObject();
             result.put("success", false);
             result.put("message", "Tipo de la receta no permitido, a continuación se muestran los tipos permitidos");
-            for (int i = 0; i < Recipe.typesCollection.size(); i++) {
-                result.put("tipo " + (i+1), Recipe.typesCollection.get(i));
+            for (Type type : recipeTypes) {
+                jsonArray.add(type.getName());
             }
+            result.put("tipos", jsonArray);
             response = Results.badRequest(result);
         }
 
@@ -108,12 +110,6 @@ public class RecipeController extends Controller {
             String name = recipeName.get();
 
             recipeFinded = Recipe.selectRecipe(name);
-
-            List<List<String>> allergens = new ArrayList<>();
-            //Convertimos los alérgenos en un array de string para que los alérgenos se puedan mostrar
-            for(Ingredient i : recipeFinded.getIngredients()) {
-                //allergens.add(i.setAllergensUndoJson());
-            }
 
             if (request.accepts("application/xml")) {
                 Content content = recipe.render(recipeFinded);
@@ -139,7 +135,6 @@ public class RecipeController extends Controller {
 
     public Result patchRecipe(Http.Request request) {
         Result response;
-        int counter = -1;
         Recipe recipe;
 
         Form<Recipe> form = formFactory.form(Recipe.class).bindFromRequest(request);
@@ -153,14 +148,16 @@ public class RecipeController extends Controller {
 
         if (null != recipeFinded) {
             boolean typeFinded = false;
-            for(int i = 0; i < Recipe.typesCollection.size(); i++) {
-                if(Recipe.typesCollection.get(i).equals(recipe.getType().toLowerCase())) {
+            List<Type> recipeTypes;
+            recipeTypes = Type.selectTypesList();
+            for(Type type : recipeTypes) {
+                if(type.getName().equals(recipe.getType())) {
                     typeFinded = true;
                     break;
                 }
             }
+
             if(typeFinded) {
-                recipe.setStepsJson();
                 recipe.update();
                 if (request.accepts("application/xml")) {
                     Content content = recipePatched.render(recipe);
@@ -177,12 +174,14 @@ public class RecipeController extends Controller {
                     response = Results.badRequest(result);
                 }
             } else {
+                ArrayNode jsonArray = Json.newArray();
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
                 result.put("message", "Tipo de la receta no permitido, a continuación se muestran los tipos permitidos");
-                for (int i = 0; i < Recipe.typesCollection.size(); i++) {
-                    result.put("tipo " + (i+1), Recipe.typesCollection.get(i));
+                for (Type type : recipeTypes) {
+                    jsonArray.add(type.getName());
                 }
+                result.put("tipos", jsonArray);
                 response = Results.badRequest(result);
             }
         } else {
@@ -245,7 +244,7 @@ public class RecipeController extends Controller {
         Optional<String> recipeDifficulty = request.queryString("difficulty");
 
         if(recipeType.isPresent() || recipeTime.isPresent() || recipeDifficulty.isPresent()) {
-            List<Recipe> recipesFinded = new ArrayList<>();
+            List<Recipe> recipesFinded;
 
             if(recipeType.isPresent()) {
                 String type = recipeType.get();
@@ -261,7 +260,7 @@ public class RecipeController extends Controller {
                 recipesFinded = Recipe.selectRecipesList("difficulty", difficulty);
             }
 
-            if(null == recipesFinded || recipesFinded.isEmpty()) {
+            if(recipesFinded.isEmpty()) {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
                 result.put("message", "No se ha encontrado ninguna receta para los parámetros establecidos");
@@ -288,117 +287,6 @@ public class RecipeController extends Controller {
             response = Results.notFound(result);
         }
 
-        return response;
-    }
-
-    public Result getTypes(Http.Request request) {
-        Result response;
-        if (request.accepts("application/xml")) {
-            Content content = types.render(Recipe.typesCollection);
-            response = Results.ok(content);
-        } else if (request.accepts("application/json")) {
-            ArrayNode jsonArray = Json.newArray();
-            ObjectNode result = Json.newObject();
-            for(String type : Recipe.typesCollection) {
-                jsonArray.add(type);
-            }
-            result.put("tipos", jsonArray);
-            response = Results.ok(result);
-        } else {
-            ObjectNode result = Json.newObject();
-            result.put("success", false);
-            result.put("message", "Formato no soportado");
-            response = Results.badRequest(result);
-        }
-        return response;
-    }
-
-    public Result createType(Http.Request request) {
-        Result response;
-        boolean typeFinded = false;
-        Optional<String> recipeType = request.queryString("type");
-        if(recipeType.isPresent() && !recipeType.get().equals("")) {
-            String newType = recipeType.get();
-
-            for(int i = 0; i < Recipe.typesCollection.size(); i++) {
-                if(Recipe.typesCollection.get(i).equals(newType)) {
-                    typeFinded = true;
-                    break;
-                }
-            }
-            if(!typeFinded) {
-                Recipe.typesCollection.add(newType);
-                if (request.accepts("application/xml")) {
-                    Content content = typeCreated.render(newType);
-                    response = Results.ok(content);
-                } else if (request.accepts("application/json")) {
-                    ObjectNode result = Json.newObject();
-                    result.put("success", true);
-                    result.put("message", "El tipo " + newType + " ha sido añadido con éxito");
-                    response = Results.ok(result);
-                } else {
-                    ObjectNode result = Json.newObject();
-                    result.put("success", false);
-                    result.put("message", "Formato no soportado");
-                    response = Results.badRequest(result);
-                }
-            } else {
-                ObjectNode result = Json.newObject();
-                result.put("success", false);
-                result.put("message", "Este tipo de receta ya existe");
-                response = Results.badRequest(result);
-            }
-        } else {
-            ObjectNode result = Json.newObject();
-            result.put("success", false);
-            result.put("message", "No ha especificado ningún tipo para añadir");
-            response = Results.badRequest(result);
-        }
-        return response;
-    }
-
-    public Result deleteType(Http.Request request) {
-        Result response;
-        int counter = -1;
-        Optional<String> recipeType = request.queryString("type");
-
-        if(recipeType.isPresent() && !recipeType.get().equals("")) {
-            String newType = recipeType.get();
-
-            for(int i = 0; i < Recipe.typesCollection.size(); i++) {
-                if(Recipe.typesCollection.get(i).equals(newType)) {
-                    counter = i;
-                    break;
-                }
-            }
-            if(counter != -1) {
-                Recipe.typesCollection.remove(counter);
-                if (request.accepts("application/xml")) {
-                    Content content = typeDeleted.render(newType);
-                    response = Results.ok(content);
-                } else if (request.accepts("application/json")) {
-                    ObjectNode result = Json.newObject();
-                    result.put("success", true);
-                    result.put("message", "El tipo " + newType + " ha sido eliminado con éxito");
-                    response = Results.ok(result);
-                } else {
-                    ObjectNode result = Json.newObject();
-                    result.put("success", false);
-                    result.put("message", "Formato no soportado");
-                    response = Results.badRequest(result);
-                }
-            } else {
-                ObjectNode result = Json.newObject();
-                result.put("success", false);
-                result.put("message", "El tipo expecificado no existe");
-                response = Results.badRequest(result);
-            }
-        } else {
-            ObjectNode result = Json.newObject();
-            result.put("success", false);
-            result.put("message", "No ha especificado ningún tipo para eliminar");
-            response = Results.badRequest(result);
-        }
         return response;
     }
 }

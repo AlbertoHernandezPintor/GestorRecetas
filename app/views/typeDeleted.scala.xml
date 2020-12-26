@@ -1,6 +1,6 @@
-@(newType: String)
+@(newType: Type)
 <?xml version="1.0" encoding="utf-8" ?>
 <content>
     <success>true</success>
-    <message>El tipo @newType ha sido eliminado con éxito</message>
+    <message>El tipo @newType.getName() ha sido eliminado con éxito</message>
 </content>

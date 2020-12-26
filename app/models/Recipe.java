@@ -28,9 +28,8 @@ public class Recipe extends Model {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Allergen> allergens;
 
-    private List<String> steps;
-
-    private String stepsJson;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private List<Step> steps;
 
     public Recipe() {
 
@@ -84,24 +83,12 @@ public class Recipe extends Model {
         this.ingredients = ingredients;
     }
 
-    public List<String> getSteps() {
+    public List<Step> getSteps() {
         return steps;
     }
 
-    public void setSteps(List<String> steps) {
+    public void setSteps(List<Step> steps) {
         this.steps = steps;
-    }
-
-    public String getStepsJson() {
-        return stepsJson;
-    }
-
-    public void setStepsJson() {
-        ObjectNode result = Json.newObject();
-        for(int i = 0; i < this.steps.size(); i++) {
-            result.put("Paso " + (i+1), this.steps.get(i));
-        }
-        this.stepsJson = result.toString();
     }
 
     public static Recipe selectRecipe(String name) {
