@@ -14,9 +14,9 @@
             @allergen(a)
         }
     </allergens>
-    @*<steps>
+    <steps>
         @for(s <- recipe.getSteps()){
             @step(s)
         }
-    </steps>*@
+    </steps>
 </recipe>

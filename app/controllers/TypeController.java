@@ -1,5 +1,6 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.DuplicateKeyException;
@@ -75,7 +76,10 @@ public class TypeController extends Controller {
             ArrayNode jsonArray = Json.newArray();
             ObjectNode result = Json.newObject();
             for(Type type : recipeTypes) {
-                jsonArray.add(type.getName());
+                ObjectNode typeJson = Json.newObject();
+                typeJson.put("name", type.getName());
+                typeJson.put("description", type.getDescription());
+                jsonArray.add(typeJson);
             }
             result.put("tipos", jsonArray);
             response = Results.ok(result);

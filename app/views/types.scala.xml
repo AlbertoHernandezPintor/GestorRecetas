@@ -2,6 +2,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <types>
     @for(t <- types){
-        <type>@t.getName()</type>
+        <type>
+            <name>@t.getName()</name>
+            <description>@t.getDescription()</description>
+        </type>
     }
 </types>

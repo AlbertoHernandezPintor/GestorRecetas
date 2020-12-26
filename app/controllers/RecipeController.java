@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.DuplicateKeyException;
-import models.Allergen;
-import models.Ingredient;
-import models.Recipe;
-import models.Type;
+import models.*;
 import play.libs.Json;
 import play.mvc.*;
 import play.data.Form;
@@ -25,7 +22,6 @@ public class RecipeController extends Controller {
 
     public Result createRecipe(Http.Request request) {
         Result response;
-        boolean find = false;
         Recipe recipe;
 
         Form<Recipe> form = formFactory.form(Recipe.class).bindFromRequest(request);
@@ -100,7 +96,6 @@ public class RecipeController extends Controller {
 
     public Result getRecipe(Http.Request request) {
         Result response;
-        boolean find = false;
 
         Optional<String> recipeName = request.queryString("name");
 
@@ -115,7 +110,38 @@ public class RecipeController extends Controller {
                 Content content = recipe.render(recipeFinded);
                 response = Results.ok(content);
             } else if (request.accepts("application/json")) {
-                JsonNode result = Json.toJson(recipeFinded);
+                ObjectNode result = Json.newObject();
+                result.put("name", recipeFinded.getName());
+                result.put("type", recipeFinded.getType());
+                result.put("time", recipeFinded.getTime());
+                result.put("dififculty", recipeFinded.getDifficulty());
+
+                ArrayNode ingredients = Json.newArray();
+                for(Ingredient ingredient : recipeFinded.getIngredients()) {
+                    ObjectNode ingredientJson = Json.newObject();
+                    ingredientJson.put("name", ingredient.getName());
+                    ingredientJson.put("type", ingredient.getType());
+                    ingredients.add(ingredientJson);
+                }
+                result.put("ingredients", ingredients);
+
+               ArrayNode allergens = Json.newArray();
+                for(Allergen allergen : recipeFinded.getAllergens()) {
+                    ObjectNode allergenJson = Json.newObject();
+                    allergenJson.put("name", allergen.getName());
+                    allergenJson.put("diseases", allergen.getDiseases());
+                    allergens.add(allergenJson);
+                }
+                result.put("allergens", allergens);
+
+                ArrayNode steps = Json.newArray();
+                for(Step step : recipeFinded.getSteps()) {
+                    ObjectNode stepJson = Json.newObject();
+                    stepJson.put("name", step.getName());
+                    stepJson.put("description", step.getDescription());
+                    steps.add(stepJson);
+                }
+                result.put("steps", steps);
                 response = Results.ok(result);
             } else {
                 ObjectNode result = Json.newObject();
@@ -237,7 +263,6 @@ public class RecipeController extends Controller {
 
     public Result getRecipes(Http.Request request) {
         Result response;
-        boolean find = false;
 
         Optional<String> recipeType = request.queryString("type");
         Optional<String> recipeTime = request.queryString("time");

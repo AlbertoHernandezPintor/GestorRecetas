@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Entity
 public class Recipe extends Model {
     public static final Finder<Long, Recipe> find = new Finder<>(Recipe.class);
-    public static ArrayList<String> typesCollection = new ArrayList<>(Arrays.asList("vegetariano", "vegano", "india"));
 
     @Id
     private String name;
