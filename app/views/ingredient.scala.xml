@@ -2,9 +2,4 @@
 <ingredient>
     <name>@ingredient.getName()</name>
     <type>@ingredient.getType()</type>
-    <allergens>
-        @for(a <- ingredient.getAllergens()){
-            @allergen(a)
-        }
-    </allergens>
 </ingredient>

@@ -9,6 +9,11 @@
             @ingredient(i)
         }
     </ingredients>
+    <allergens>
+        @for(a <- recipe.getAllergens()){
+            @allergen(a)
+        }
+    </allergens>
     <steps>
         @for(s <- recipe.getSteps()){
             @step(s)

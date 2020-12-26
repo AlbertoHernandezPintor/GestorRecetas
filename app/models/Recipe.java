@@ -2,18 +2,45 @@ package models;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class Recipe {
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.ebean.Finder;
+import io.ebean.Model;
+import play.libs.Json;
 
-    public static ArrayList<Recipe> recipesCollection = new ArrayList<>();
-    public static ArrayList<String> typesCollection = new ArrayList<>(Arrays.asList("vegetariano", "vegano", "india"));
+import javax.persistence.*;
 
+@Entity
+public class Recipe extends Model {
+    public static final Finder<Long, Recipe> find = new Finder<>(Recipe.class);
+
+    @Id
     private String name;
     private String type;
     private String time;
     private String difficulty;
-    private Ingredient[] ingredients;
-    private String[] steps;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Ingredient> ingredients;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Allergen> allergens;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private List<Step> steps;
+
+    public Recipe() {
+
+    }
+
+    public List<Allergen> getAllergens() {
+        return allergens;
+    }
+
+    public void setAllergens(List<Allergen> allergens) {
+        this.allergens = allergens;
+    }
 
     public String getName() {
         return name;
@@ -47,19 +74,28 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
-    public Ingredient[] getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Ingredient[] ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public String[] getSteps() {
+    public List<Step> getSteps() {
         return steps;
     }
 
-    public void setSteps(String[] steps) {
+    public void setSteps(List<Step> steps) {
         this.steps = steps;
+    }
+
+    public static Recipe selectRecipe(String name) {
+        return find.query().where().eq("name", name).findOne();
+    }
+
+    public static List<Recipe> selectRecipesList(String property, String value) {
+        System.out.println("Se busca por: " + property + "y por: " + value);
+        return find.query().where().eq(property, value).findList();
     }
 }

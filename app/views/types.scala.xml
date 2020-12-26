@@ -1,7 +1,10 @@
-@(types: List[String])
-        <?xml version="1.0" encoding="utf-8" ?>
+@(types: List[Type])
+<?xml version="1.0" encoding="utf-8" ?>
 <types>
     @for(t <- types){
-    <type>@t</type>
+        <type>
+            <name>@t.getName()</name>
+            <description>@t.getDescription()</description>
+        </type>
     }
 </types>
