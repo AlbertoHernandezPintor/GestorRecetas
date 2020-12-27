@@ -1,15 +1,30 @@
-error.message-repeated-recipe   =   The recipe {0} already exists
-error.unsupported-format        =   Unsupported format
-error.type-not-allowed          =   Recipe type not allowed, the allowed types are shown below
-error.search-factor             =   No search factor has been chosen
-error.recipe-not-exist          =   The recipe {0} does not exist
-error.no-recipe-found           =   No recipe found for the set parameters
-error.invalid-parameter         =   The set parameter is invalid
-error.message-repeated-type     =   The type {0} already exists
-error.type-not-exist            =   The type {0} does not exist
+error.message-repeated-recipe           =   The recipe {0} already exists
+error.unsupported-format                =   Unsupported format
+error.type-not-allowed                  =   Recipe type not allowed, the allowed types are shown below
+error.search-factor                     =   No search factor has been chosen
+error.recipe-not-exist                  =   The recipe {0} does not exist
+error.no-recipe-found                   =   No recipe found for the set parameters
+error.invalid-parameter                 =   The set parameter is invalid
+error.message-repeated-type             =   The type {0} already exists
+error.type-not-exist                    =   The type {0} does not exist
 
-info.message-recipe-created     =   The recipe {0} has been created successfully
-info.message-recipe-modified    =   The recipe {0} has been modified successfully
-info.message-recipe-deleted     =   The recipe {0} has been deleted successfully
-info.message-type-created       =   The type {0} has been created successfully
-info.message-type-deleted       =   The type {0} has been deleted successfully
+error.recipe-name-required              =   The recipe name is required
+error.recipe-type-required              =   The recipe type is required
+error.recipe-time-required              =   The recipe time is required
+error.recipe-time-number                =   The recipe time must to be integer
+error.recipe-difficulty-required        =   The recipe difficulty is required
+error.recipe-ingredient-required        =   The recipe must to have at least one ingredient
+error.recipe-step-required              =   The recipe must to have at least one step
+
+error.type-name-required                =   The name of the recipe type is required
+error.type-description-required         =   The description of the recipe type is required
+
+error.allergen-format                   =   Allergen invalid, it must to be formed by a name and a disease
+error.ingredient-format                 =   Ingredient invalid, it must to be formed by a name and a type
+error.step-format                       =   Step invalid, it must to be formed by a name and a description
+
+info.message-recipe-created             =   The recipe {0} has been created successfully
+info.message-recipe-modified            =   The recipe {0} has been modified successfully
+info.message-recipe-deleted             =   The recipe {0} has been deleted successfully
+info.message-type-created               =   The type {0} has been created successfully
+info.message-type-deleted               =   The type {0} has been deleted successfully

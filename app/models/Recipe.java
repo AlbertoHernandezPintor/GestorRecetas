@@ -14,22 +14,22 @@ import javax.persistence.*;
 public class Recipe extends Model {
     public static final Finder<Long, Recipe> find = new Finder<>(Recipe.class);
 
-    @Required(message="El nombre de la receta es obligatorio")
+    @Required(message="error.recipe-name-required")
     @Id
     private String name;
 
-    @Required(message="El tipo de la receta es obligatorio")
+    @Required(message="error.recipe-type-required")
     private String type;
 
-    @Required(message="El tiempo de la receta es obligatorio")
-    @Pattern(value = "^[0-9]+$", message = "El tiempo tiene que ser un número entero")
+    @Required(message="error.recipe-time-required")
+    @Pattern(value = "^[0-9]+$", message = "error.recipe-time-number")
     private String time;
 
-    @Required(message="La dificultad de la receta es obligatoria")
+    @Required(message="error.recipe-difficulty-required")
     private String difficulty;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @Required(message="La receta tiene que contener al menos un ingrediente")
+    @Required(message="error.recipe-ingredient-required")
     @Constraints.ValidateWith(IngredientValidator.class)
     private List<Ingredient> ingredients;
 
@@ -38,7 +38,7 @@ public class Recipe extends Model {
     private List<Allergen> allergens;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    @Required(message="La receta tiene que contener al menos un paso")
+    @Required(message="error.recipe-step-required")
     @Constraints.ValidateWith(StepValidator.class)
     private List<Step> steps;
 

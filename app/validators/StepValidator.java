@@ -11,7 +11,7 @@ public class StepValidator extends Constraints.Validator<List<Step>> {
     @Override
     public F.Tuple<String, Object[]> getErrorMessageKey() {
         return new F.Tuple<String, Object[]>(
-                "El paso no es válido, tiene que estar formado por un nombre y una descripción", new Object[]{""}
+                "error.step-format", new Object[]{""}
         );
     }
 

@@ -9,7 +9,7 @@ public class IngredientValidator extends Constraints.Validator<List<Ingredient>>
     @Override
     public F.Tuple<String, Object[]> getErrorMessageKey() {
         return new F.Tuple<String, Object[]>(
-                "El ingrediente no es válido, tiene que estar formado por un nombre y un tipo", new Object[]{""}
+                "error.ingredient-format", new Object[]{""}
         );
     }
 

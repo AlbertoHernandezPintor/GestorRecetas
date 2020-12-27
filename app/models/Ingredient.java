@@ -14,11 +14,9 @@ import javax.persistence.ManyToMany;
 public class Ingredient extends Model {
     public static final Finder<Long, Ingredient> find = new Finder<>(Ingredient.class);
 
-    @Required(message="El nombre del ingrediente es obligatorio")
     @Id
     private String name;
 
-    @Required(message="El tipo del ingrediente es obligatorio")
     private String type;
 
     @ManyToMany(mappedBy = "ingredients")

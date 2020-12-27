@@ -15,10 +15,8 @@ public class Allergen extends Model {
     public static final Finder<Long, Allergen> find = new Finder<>(Allergen.class);
 
     @Id
-    @Required(message="El nombre del alérgeno es obligatorio")
     private String name;
 
-    @Required(message="La enfermedad del alérgeno es obligatoria")
     private String diseases;
 
     @ManyToMany(mappedBy = "allergens")

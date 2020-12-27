@@ -1,15 +1,30 @@
-error.message-repeated-recipe   =   La receta {0} ya existe
-error.unsupported-format        =   Formato no soportado
-error.type-not-allowed          =   Tipo de la receta no permitido, a continuación se muestran los tipos permitidos
-error.search-factor             =   No se ha elegido ningún factor de búsqueda
-error.recipe-not-exist          =   La receta {0} no existe
-error.no-recipe-found           =   No se ha encontrado ninguna receta para los parámetros establecidos
-error.invalid-parameter         =   El parámetro establecido no es válido
-error.message-repeated-type     =   El tipo {0} ya existe
-error.type-not-exist            =   El tipo {0} no existe
+error.message-repeated-recipe           =   La receta {0} ya existe
+error.unsupported-format                =   Formato no soportado
+error.type-not-allowed                  =   Tipo de la receta no permitido, a continuación se muestran los tipos permitidos
+error.search-factor                     =   No se ha elegido ningún factor de búsqueda
+error.recipe-not-exist                  =   La receta {0} no existe
+error.no-recipe-found                   =   No se ha encontrado ninguna receta para los parámetros establecidos
+error.invalid-parameter                 =   El parámetro establecido no es válido
+error.message-repeated-type             =   El tipo {0} ya existe
+error.type-not-exist                    =   El tipo {0} no existe
 
-info.message-recipe-created     =   La receta {0} ha sido creada con éxito
-info.message-recipe-modified    =   La receta {0} ha sido modificada con éxito
-info.message-recipe-deleted     =   La receta {0} ha sido eliminada con éxito
-info.message-type-created       =   El tipo {0} ha sido creado con éxito
-info.message-type-deleted       =   El tipo {0} ha sido eliminado con éxito
+error.recipe-name-required              =   El nombre de la receta es obligatorio
+error.recipe-type-required              =   El tipo de la receta es obligatorio
+error.recipe-time-required              =   El tiempo de la receta es obligatorio
+error.recipe-time-number                =   El tiempo tiene que ser un número entero
+error.recipe-difficulty-required        =   La dificultad de la receta es obligatoria
+error.recipe-ingredient-required        =   La receta tiene que contener al menos un ingrediente
+error.recipe-step-required              =   La receta tiene que contener al menos un paso
+
+error.type-name-required                =   El nombre del tipo de receta es obligatorio
+error.type-description-required         =   La descripción del tipo de receta es obligatoria
+
+error.allergen-format                   =   El alérgeno no es válido, tiene que estar formado por un nombre y una enfermedad
+error.ingredient-format                 =   El ingrediente no es válido, tiene que estar formado por un nombre y un tipo
+error.step-format                       =   El paso no es válido, tiene que estar formado por un nombre y una descripción
+
+info.message-recipe-created             =   La receta {0} ha sido creada con éxito
+info.message-recipe-modified            =   La receta {0} ha sido modificada con éxito
+info.message-recipe-deleted             =   La receta {0} ha sido eliminada con éxito
+info.message-type-created               =   El tipo {0} ha sido creado con éxito
+info.message-type-deleted               =   El tipo {0} ha sido eliminado con éxito
