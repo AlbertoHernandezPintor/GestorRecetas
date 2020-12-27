@@ -1,6 +1,6 @@
-@(recipeType: Type)
+@(recipeType: Type, messages: play.i18n.Messages)
 <?xml version="1.0" encoding="utf-8" ?>
 <content>
     <success>true</success>
-    <message>El tipo @recipeType.getName() ha sido creado con éxito</message>
+    <message>@messages.at("info.message-type-created", recipeType.getName())</message>
 </content>

@@ -1,6 +1,6 @@
-@(recipe: Recipe)
+@(recipe: Recipe, messages: play.i18n.Messages)
 <?xml version="1.0" encoding="utf-8" ?>
 <content>
     <success>true</success>
-    <message>La receta @recipe.getName() ha sido creada con éxito</message>
+    <message>@messages.at("info.message-recipe-created", recipe.getName())</message>
 </content>

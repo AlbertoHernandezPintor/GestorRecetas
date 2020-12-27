@@ -5,14 +5,16 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.DuplicateKeyException;
 import models.*;
+import play.i18n.Messages;
+import play.i18n.MessagesApi;
 import play.libs.Json;
 import play.mvc.*;
 import play.data.Form;
 import play.data.FormFactory;
 import play.twirl.api.Content;
 import javax.inject.Inject;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import views.xml.*;
 
 public class RecipeController extends Controller {
@@ -20,9 +22,18 @@ public class RecipeController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    private final play.i18n.MessagesApi messagesApi;
+
+    @Inject
+    public RecipeController(MessagesApi messagesApi) {
+        this.messagesApi = messagesApi;
+    }
+
     public Result createRecipe(Http.Request request) {
         Result response;
         Recipe recipe;
+
+        Messages messages = messagesApi.preferred(request);
 
         Form<Recipe> form = formFactory.form(Recipe.class).bindFromRequest(request);
 
@@ -61,29 +72,29 @@ public class RecipeController extends Controller {
             } catch(DuplicateKeyException e) {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", "La receta " + recipe.getName() + " ya existe");
+                result.put("message", messages.at("error.message-repeated-recipe", recipe.getName()));
                 return Results.status(CONFLICT, result);
             }
 
             if (request.accepts("application/xml")) {
-                Content content = recipeCreated.render(recipe);
+                Content content = recipeCreated.render(recipe, messages);
                 response = Results.ok(content);
             } else if (request.accepts("application/json")) {
                 ObjectNode result = Json.newObject();
                 result.put("success", true);
-                result.put("message", "La receta " + recipe.getName() + " ha sido creada con éxito");
+                result.put("message", messages.at("info.message-recipe-created", recipe.getName()));
                 response = Results.ok(result);
             } else {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", "Formato no soportado");
+                result.put("message", messages.at("error.unsupported-format"));
                 response = Results.badRequest(result);
             }
         } else {
             ArrayNode jsonArray = Json.newArray();
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", "Tipo de la receta no permitido, a continuación se muestran los tipos permitidos");
+            result.put("message", messages.at("error.type-not-allowed"));
             for (Type type : recipeTypes) {
                 jsonArray.add(type.getName());
             }
@@ -96,6 +107,8 @@ public class RecipeController extends Controller {
 
     public Result getRecipe(Http.Request request) {
         Result response;
+
+        Messages messages = messagesApi.preferred(request);
 
         Optional<String> recipeName = request.queryString("name");
 
@@ -146,13 +159,13 @@ public class RecipeController extends Controller {
             } else {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", "Formato no soportado");
+                result.put("message", messages.at("error.unsupported-format"));
                 response = Results.badRequest(result);
             }
         } else {
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", "No se ha elegido ningún factor de búsqueda");
+            result.put("message", messages.at("error.search-factor"));
             response = Results.badRequest(result);
         }
 
@@ -162,6 +175,8 @@ public class RecipeController extends Controller {
     public Result patchRecipe(Http.Request request) {
         Result response;
         Recipe recipe;
+
+        Messages messages = messagesApi.preferred(request);
 
         Form<Recipe> form = formFactory.form(Recipe.class).bindFromRequest(request);
 
@@ -186,24 +201,24 @@ public class RecipeController extends Controller {
             if(typeFinded) {
                 recipe.update();
                 if (request.accepts("application/xml")) {
-                    Content content = recipePatched.render(recipe);
+                    Content content = recipePatched.render(recipe, messages);
                     response = Results.ok(content);
                 } else if (request.accepts("application/json")) {
                     ObjectNode result = Json.newObject();
                     result.put("success", true);
-                    result.put("message", "La receta " + recipe.getName() + " ha sido modificada con éxito");
+                    result.put("message", messages.at("info.message-recipe-modified", recipe.getName()));
                     response = Results.ok(result);
                 } else {
                     ObjectNode result = Json.newObject();
                     result.put("success", false);
-                    result.put("message", "Formato no soportado");
+                    result.put("message", messages.at("error.unsupported-format"));
                     response = Results.badRequest(result);
                 }
             } else {
                 ArrayNode jsonArray = Json.newArray();
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", "Tipo de la receta no permitido, a continuación se muestran los tipos permitidos");
+                result.put("message", messages.at("error.type-not-allowed"));
                 for (Type type : recipeTypes) {
                     jsonArray.add(type.getName());
                 }
@@ -213,7 +228,7 @@ public class RecipeController extends Controller {
         } else {
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", "La receta " + recipe.getName() + " no existe");
+            result.put("message", messages.at("error.recipe-not-exist", recipe.getName()));
             response = Results.notFound(result);
         }
 
@@ -224,6 +239,8 @@ public class RecipeController extends Controller {
         Result response;
         Optional<String> recipeName = request.queryString("name");
 
+        Messages messages = messagesApi.preferred(request);
+
         if(recipeName.isPresent() && !"".equals(recipeName.get())) {
             String name = recipeName.get();
 
@@ -232,29 +249,29 @@ public class RecipeController extends Controller {
             if(null == recipeFinded) {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", "La receta " + recipeName.get() + " no existe");
+                result.put("message", messages.at("error.recipe-not-exist", recipeName.get()));
                 response = Results.notFound(result);
             } else {
                 recipeFinded.delete();
                 if (request.accepts("application/xml")) {
-                    Content content = recipeDeleted.render(recipeFinded);
+                    Content content = recipeDeleted.render(recipeFinded, messages);
                     response = Results.ok(content);
                 } else if (request.accepts("application/json")) {
                     ObjectNode result = Json.newObject();
                     result.put("success", true);
-                    result.put("message", "La receta " + recipeFinded.getName() + " ha sido eliminada con éxito");
+                    result.put("message",  messages.at("info.message-recipe-deleted", recipeFinded.getName()));
                     response = Results.ok(result);
                 } else {
                     ObjectNode result = Json.newObject();
                     result.put("success", false);
-                    result.put("message", "Formato no soportado");
+                    result.put("message", messages.at("error.unsupported-format"));
                     response = Results.badRequest(result);
                 }
             }
         } else {
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", "No se ha elegido ningún factor de búsqueda");
+            result.put("message", messages.at("error.search-factor"));
             response = Results.badRequest(result);
         }
 
@@ -267,6 +284,8 @@ public class RecipeController extends Controller {
         Optional<String> recipeType = request.queryString("type");
         Optional<String> recipeTime = request.queryString("time");
         Optional<String> recipeDifficulty = request.queryString("difficulty");
+
+        Messages messages = messagesApi.preferred(request);
 
         if(recipeType.isPresent() || recipeTime.isPresent() || recipeDifficulty.isPresent()) {
             List<Recipe> recipesFinded;
@@ -288,7 +307,7 @@ public class RecipeController extends Controller {
             if(recipesFinded.isEmpty()) {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", "No se ha encontrado ninguna receta para los parámetros establecidos");
+                result.put("message", messages.at("error.no-recipe-found"));
                 response = Results.notFound(result);
             } else {
                 if (request.accepts("application/xml")) {
@@ -300,7 +319,7 @@ public class RecipeController extends Controller {
                 } else {
                     ObjectNode result = Json.newObject();
                     result.put("success", false);
-                    result.put("message", "Formato no soportado");
+                    result.put("message", messages.at("error.unsupported-format"));
                     response = Results.badRequest(result);
                 }
             }
@@ -308,7 +327,7 @@ public class RecipeController extends Controller {
             //El if que había aquí sobraba
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", "El parámetro establecido no es válido"); //Se cambia el mensaje que devuelve
+            result.put("message", messages.at("error.invalid-parameter")); //Se cambia el mensaje que devuelve
             response = Results.notFound(result);
         }
 

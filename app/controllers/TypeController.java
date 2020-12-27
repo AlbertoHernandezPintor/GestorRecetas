@@ -7,6 +7,8 @@ import io.ebean.DuplicateKeyException;
 import models.Type;
 import play.data.Form;
 import play.data.FormFactory;
+import play.i18n.Messages;
+import play.i18n.MessagesApi;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -25,9 +27,18 @@ public class TypeController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    private final play.i18n.MessagesApi messagesApi;
+
+    @Inject
+    public TypeController(MessagesApi messagesApi) {
+        this.messagesApi = messagesApi;
+    }
+
     public Result createType(Http.Request request) {
         Result response;
         Type type;
+
+        Messages messages = messagesApi.preferred(request);
 
         Form<Type> form = formFactory.form(Type.class).bindFromRequest(request);
 
@@ -41,22 +52,22 @@ public class TypeController extends Controller {
         } catch(DuplicateKeyException e) {
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", "El tipo " + type.getName() + " ya existe");
+            result.put("message", messages.at("error.message-repeated-type"));
             return Results.status(CONFLICT, result);
         }
 
         if (request.accepts("application/xml")) {
-            Content content = typeCreated.render(type);
+            Content content = typeCreated.render(type, messages);
             response = Results.ok(content);
         } else if (request.accepts("application/json")) {
             ObjectNode result = Json.newObject();
             result.put("success", true);
-            result.put("message", "El tipo " + type.getName() + " ha sido creado con éxito");
+            result.put("message", messages.at("info.message-type-created", type.getName()));
             response = Results.ok(result);
         } else {
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", "Formato no soportado");
+            result.put("message", messages.at("error.unsupported-format"));
             response = Results.badRequest(result);
         }
 
@@ -68,6 +79,8 @@ public class TypeController extends Controller {
 
         List<Type> recipeTypes;
         recipeTypes = Type.selectTypesList();
+
+        Messages messages = messagesApi.preferred(request);
 
         if (request.accepts("application/xml")) {
             Content content = types.render(recipeTypes);
@@ -86,7 +99,7 @@ public class TypeController extends Controller {
         } else {
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", "Formato no soportado");
+            result.put("message", messages.at("error.unsupported-format"));
             response = Results.badRequest(result);
         }
         return response;
@@ -97,6 +110,8 @@ public class TypeController extends Controller {
 
         Optional<String> typeName = request.queryString("name");
 
+        Messages messages = messagesApi.preferred(request);
+
         if(typeName.isPresent() && !"".equals(typeName.get())) {
             String name = typeName.get();
 
@@ -105,29 +120,29 @@ public class TypeController extends Controller {
             if(null == typeFinded) {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", "El tipo " + typeName.get() + " no existe");
+                result.put("message", messages.at("error.type-not-exist", typeName.get()));
                 response = Results.notFound(result);
             } else {
                 typeFinded.delete();
                 if (request.accepts("application/xml")) {
-                    Content content = typeDeleted.render(typeFinded);
+                    Content content = typeDeleted.render(typeFinded, messages);
                     response = Results.ok(content);
                 } else if (request.accepts("application/json")) {
                     ObjectNode result = Json.newObject();
                     result.put("success", true);
-                    result.put("message", "El tipo " + typeFinded.getName() + " ha sido eliminado con éxito");
+                    result.put("message", messages.at("info.message-type-deleted", typeFinded.getName()));
                     response = Results.ok(result);
                 } else {
                     ObjectNode result = Json.newObject();
                     result.put("success", false);
-                    result.put("message", "Formato no soportado");
+                    result.put("message", messages.at("error.unsupported-format"));
                     response = Results.badRequest(result);
                 }
             }
         } else {
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", "No se ha elegido ningún factor de búsqueda");
+            result.put("message", messages.at("error.search-factor"));
             response = Results.badRequest(result);
         }
 
