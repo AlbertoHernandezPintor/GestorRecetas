@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.DuplicateKeyException;
 import models.*;
+import play.cache.SyncCacheApi;
 import play.i18n.Messages;
 import play.i18n.MessagesApi;
 import play.libs.Json;
@@ -21,6 +22,9 @@ public class RecipeController extends Controller {
 
     @Inject
     FormFactory formFactory;
+
+    @Inject
+    private SyncCacheApi cache;
 
     private final play.i18n.MessagesApi messagesApi;
 
@@ -44,7 +48,12 @@ public class RecipeController extends Controller {
 
         boolean typeFinded = false;
         List<Type> recipeTypes;
-        recipeTypes = Type.selectTypesList();
+        recipeTypes = cache.getOrElseUpdate(
+                "types-cache",
+                () -> {
+                    return Type.selectTypesList();
+                }
+        );
         for(Type type : recipeTypes) {
             if(type.getName().equals(recipe.getType())) {
                 typeFinded = true;
@@ -190,7 +199,12 @@ public class RecipeController extends Controller {
         if (null != recipeFinded) {
             boolean typeFinded = false;
             List<Type> recipeTypes;
-            recipeTypes = Type.selectTypesList();
+            recipeTypes = cache.getOrElseUpdate(
+                    "types-cache",
+                    () -> {
+                        return Type.selectTypesList();
+                    }
+            );
             for(Type type : recipeTypes) {
                 if(type.getName().equals(recipe.getType())) {
                     typeFinded = true;
