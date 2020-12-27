@@ -21,11 +21,15 @@ import views.xml.types;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
+import play.cache.SyncCacheApi;
 
 public class TypeController extends Controller {
 
     @Inject
     FormFactory formFactory;
+
+    @Inject
+    private SyncCacheApi cache;
 
     private final play.i18n.MessagesApi messagesApi;
 
@@ -49,6 +53,7 @@ public class TypeController extends Controller {
 
         try {
             type.save();
+            cache.set("types-cache", Type.selectTypesList());
         } catch(DuplicateKeyException e) {
             ObjectNode result = Json.newObject();
             result.put("success", false);
@@ -77,8 +82,12 @@ public class TypeController extends Controller {
     public Result getTypes(Http.Request request) {
         Result response;
 
-        List<Type> recipeTypes;
-        recipeTypes = Type.selectTypesList();
+        List<Type> recipeTypes = cache.getOrElseUpdate(
+                "types-cache",
+                () -> {
+                    return Type.selectTypesList();
+                }
+        );
 
         Messages messages = messagesApi.preferred(request);
 
