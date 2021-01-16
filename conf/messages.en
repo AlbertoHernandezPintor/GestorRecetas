@@ -23,6 +23,8 @@ error.allergen-format                   =   Allergen invalid, it must to be form
 error.ingredient-format                 =   Ingredient invalid, it must to be formed by a name and a type
 error.step-format                       =   Step invalid, it must to be formed by a name and a description
 
+error.Unauthorized                      =   Unauthenticated user or role not allowed
+
 info.message-recipe-created             =   The recipe {0} has been created successfully
 info.message-recipe-modified            =   The recipe {0} has been modified successfully
 info.message-recipe-deleted             =   The recipe {0} has been deleted successfully

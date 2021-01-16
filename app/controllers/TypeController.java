@@ -1,6 +1,6 @@
 package controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import actions.ActionAuthentication;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.DuplicateKeyException;
@@ -10,10 +10,7 @@ import play.data.FormFactory;
 import play.i18n.Messages;
 import play.i18n.MessagesApi;
 import play.libs.Json;
-import play.mvc.Controller;
-import play.mvc.Http;
-import play.mvc.Result;
-import play.mvc.Results;
+import play.mvc.*;
 import play.twirl.api.Content;
 import views.xml.typeCreated;
 import views.xml.typeDeleted;
@@ -23,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import play.cache.SyncCacheApi;
 
+@Security.Authenticated(ActionAuthentication.class)
 public class TypeController extends Controller {
 
     @Inject

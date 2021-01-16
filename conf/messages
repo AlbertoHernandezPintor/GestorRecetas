@@ -23,6 +23,8 @@ error.allergen-format                   =   El alérgeno no es válido, tiene qu
 error.ingredient-format                 =   El ingrediente no es válido, tiene que estar formado por un nombre y un tipo
 error.step-format                       =   El paso no es válido, tiene que estar formado por un nombre y una descripción
 
+error.Unauthorized                      =   Usuario no autenticado o rol no permitido
+
 info.message-recipe-created             =   La receta {0} ha sido creada con éxito
 info.message-recipe-modified            =   La receta {0} ha sido modificada con éxito
 info.message-recipe-deleted             =   La receta {0} ha sido eliminada con éxito

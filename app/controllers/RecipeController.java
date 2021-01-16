@@ -1,5 +1,6 @@
 package controllers;
 
+import actions.ActionAuthentication;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -249,6 +250,7 @@ public class RecipeController extends Controller {
         return response;
     }
 
+    @Security.Authenticated(ActionAuthentication.class)
     public Result deleteRecipe(Http.Request request) {
         Result response;
         Optional<String> recipeName = request.queryString("name");
