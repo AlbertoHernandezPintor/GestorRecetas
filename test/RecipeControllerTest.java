@@ -12,7 +12,7 @@ public class RecipeControllerTest extends WithApplication {
     @Test
     public void createRecipeTest() {
         ObjectNode body = Json.newObject();
-        body.put("name", "recetaTest2");
+        body.put("name", "recetaTest25");
         body.put("type", "Vegana");
         body.put("time", "50");
         body.put("difficulty", "hard");
@@ -43,6 +43,16 @@ public class RecipeControllerTest extends WithApplication {
                 .uri("http://localhost:9000/recipe")
                 .header("Accept", "application/json")
                 .bodyJson(body);
+        Result r = Helpers.route(app, req);
+        Assert.assertEquals(200, r.status());
+    }
+
+    @Test
+    public void getRecipeTest() {
+        Http.RequestBuilder req = Helpers.fakeRequest()
+                .method("GET")
+                .uri("http://localhost:9000/recipe?name=recetaTest2")
+                .header("Accept", "application/json");
         Result r = Helpers.route(app, req);
         Assert.assertEquals(200, r.status());
     }
