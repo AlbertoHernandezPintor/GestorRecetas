@@ -12,7 +12,7 @@ public class RecipeControllerTest extends WithApplication {
     @Test
     public void createRecipeTest() {
         ObjectNode body = Json.newObject();
-        body.put("name", "recetaTest25");
+        body.put("name", "recetaTest4");
         body.put("type", "Vegana");
         body.put("time", "50");
         body.put("difficulty", "hard");
@@ -51,7 +51,7 @@ public class RecipeControllerTest extends WithApplication {
     public void getRecipeTest() {
         Http.RequestBuilder req = Helpers.fakeRequest()
                 .method("GET")
-                .uri("http://localhost:9000/recipe?name=recetaTest2")
+                .uri("http://localhost:9000/recipe?name=recetaTest4")
                 .header("Accept", "application/json");
         Result r = Helpers.route(app, req);
         Assert.assertEquals(200, r.status());
@@ -60,7 +60,7 @@ public class RecipeControllerTest extends WithApplication {
     @Test
     public void patchRecipeTest() {
         ObjectNode body = Json.newObject();
-        body.put("name", "recetaTest25");
+        body.put("name", "recetaTest4");
         body.put("type", "Charra");
         body.put("time", "50");
         body.put("difficulty", "hard");
@@ -91,6 +91,26 @@ public class RecipeControllerTest extends WithApplication {
                 .uri("http://localhost:9000/recipe")
                 .header("Accept", "application/json")
                 .bodyJson(body);
+        Result r = Helpers.route(app, req);
+        Assert.assertEquals(200, r.status());
+    }
+
+    @Test
+    public void getRecipesTest() {
+        Http.RequestBuilder req = Helpers.fakeRequest()
+                .method("GET")
+                .uri("http://localhost:9000/recipes?type=Charra")
+                .header("Accept", "application/json")
+        Result r = Helpers.route(app, req);
+        Assert.assertEquals(200, r.status());
+    }
+
+    @Test
+    public void deleteRecipeTest() {
+        Http.RequestBuilder req = Helpers.fakeRequest()
+                .method("DELETE")
+                .uri("http://localhost:9000/recipe?name=recetaTest4")
+                .header("Authorization", "userToken");
         Result r = Helpers.route(app, req);
         Assert.assertEquals(200, r.status());
     }
