@@ -330,8 +330,43 @@ public class RecipeController extends Controller {
                     Content content = recipes.render(recipesFinded);
                     response = Results.ok(content);
                 } else if (request.accepts("application/json")) {
-                    JsonNode result = Json.toJson(recipesFinded);
-                    response = Results.ok(result);
+                    ArrayNode jsonArray = Json.newArray();
+                    for (Recipe recipeFinded : recipesFinded) {
+                        ObjectNode result = Json.newObject();
+                        result.put("name", recipeFinded.getName());
+                        result.put("type", recipeFinded.getType());
+                        result.put("time", recipeFinded.getTime());
+                        result.put("dififculty", recipeFinded.getDifficulty());
+
+                        ArrayNode ingredients = Json.newArray();
+                        for(Ingredient ingredient : recipeFinded.getIngredients()) {
+                            ObjectNode ingredientJson = Json.newObject();
+                            ingredientJson.put("name", ingredient.getName());
+                            ingredientJson.put("type", ingredient.getType());
+                            ingredients.add(ingredientJson);
+                        }
+                        result.put("ingredients", ingredients);
+
+                        ArrayNode allergens = Json.newArray();
+                        for(Allergen allergen : recipeFinded.getAllergens()) {
+                            ObjectNode allergenJson = Json.newObject();
+                            allergenJson.put("name", allergen.getName());
+                            allergenJson.put("diseases", allergen.getDiseases());
+                            allergens.add(allergenJson);
+                        }
+                        result.put("allergens", allergens);
+
+                        ArrayNode steps = Json.newArray();
+                        for(Step step : recipeFinded.getSteps()) {
+                            ObjectNode stepJson = Json.newObject();
+                            stepJson.put("name", step.getName());
+                            stepJson.put("description", step.getDescription());
+                            steps.add(stepJson);
+                        }
+                        result.put("steps", steps);
+                        jsonArray.add(result);
+                    }
+                    response = Results.ok(jsonArray);
                 } else {
                     ObjectNode result = Json.newObject();
                     result.put("success", false);
