@@ -1,18 +1,25 @@
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+import play.Application;
 import play.libs.Json;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.test.Helpers;
 import play.test.WithApplication;
 
+//Permite definir el orden de los test
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RecipeControllerTest extends WithApplication {
+    private String recipeTestName = "recipeTest7";
+
     @Test
-    public void createRecipeTest() {
+    public void test_a_createRecipe() {
         ObjectNode body = Json.newObject();
-        body.put("name", "recetaTest4");
+        body.put("name", this.recipeTestName);
         body.put("type", "Vegana");
         body.put("time", "50");
         body.put("difficulty", "hard");
@@ -48,19 +55,19 @@ public class RecipeControllerTest extends WithApplication {
     }
 
     @Test
-    public void getRecipeTest() {
+    public void test_b_getRecipe() {
         Http.RequestBuilder req = Helpers.fakeRequest()
                 .method("GET")
-                .uri("http://localhost:9000/recipe?name=recetaTest4")
+                .uri("http://localhost:9000/recipe?name=" + this.recipeTestName)
                 .header("Accept", "application/json");
         Result r = Helpers.route(app, req);
         Assert.assertEquals(200, r.status());
     }
 
     @Test
-    public void patchRecipeTest() {
+    public void test_c_patchRecipe() {
         ObjectNode body = Json.newObject();
-        body.put("name", "recetaTest4");
+        body.put("name", this.recipeTestName);
         body.put("type", "Charra");
         body.put("time", "50");
         body.put("difficulty", "hard");
@@ -96,22 +103,23 @@ public class RecipeControllerTest extends WithApplication {
     }
 
     @Test
-    public void getRecipesTest() {
+    public void test_d_getRecipes() {
         Http.RequestBuilder req = Helpers.fakeRequest()
                 .method("GET")
                 .uri("http://localhost:9000/recipes?type=Charra")
-                .header("Accept", "application/json")
+                .header("Accept", "application/json");
         Result r = Helpers.route(app, req);
         Assert.assertEquals(200, r.status());
     }
 
-    @Test
-    public void deleteRecipeTest() {
+    /*@Test
+    public void test_e_deleteRecipe() {
         Http.RequestBuilder req = Helpers.fakeRequest()
                 .method("DELETE")
-                .uri("http://localhost:9000/recipe?name=recetaTest4")
+                .uri("http://localhost:9000/recipe?name=" + this.recipeTestName)
                 .header("Authorization", "userToken");
+
         Result r = Helpers.route(app, req);
         Assert.assertEquals(200, r.status());
-    }
+    }*/
 }
