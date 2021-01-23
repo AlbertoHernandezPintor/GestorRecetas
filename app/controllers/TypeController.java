@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import play.cache.SyncCacheApi;
 
-@Security.Authenticated(ActionAuthentication.class)
+
 public class TypeController extends Controller {
 
     @Inject
@@ -36,6 +36,7 @@ public class TypeController extends Controller {
         this.messagesApi = messagesApi;
     }
 
+    @Security.Authenticated(ActionAuthentication.class)
     public Result createType(Http.Request request) {
         Result response;
         Type type;
@@ -111,7 +112,7 @@ public class TypeController extends Controller {
         }
         return response;
     }
-
+    @Security.Authenticated(ActionAuthentication.class)
     public Result deleteType(Http.Request request) {
         Result response;
 
