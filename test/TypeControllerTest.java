@@ -12,7 +12,7 @@ import play.test.WithApplication;
 //Permite definir el orden de los test
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TypeControllerTest extends WithApplication {
-    /*@Test
+    @Test
     public void test_a_createType() {
         ObjectNode body = Json.newObject();
         body.put("name", "Carne");
@@ -22,7 +22,7 @@ public class TypeControllerTest extends WithApplication {
                 .method("POST")
                 .uri("http://localhost:9000/type")
                 .header("Accept", "application/json")
-                .header("Authorization", "userToken")
+                .header("Authentication", "adminToken")
                 .bodyJson(body);
         Result r = Helpers.route(app, req);
         Assert.assertEquals(200, r.status());
@@ -33,10 +33,11 @@ public class TypeControllerTest extends WithApplication {
         Http.RequestBuilder req = Helpers.fakeRequest()
                 .method("DELETE")
                 .uri("http://localhost:9000/type?name=Carne")
-                .header("Accept", "application/json");
+                .header("Accept", "application/json")
+                .header("Authentication", "adminToken");
         Result r = Helpers.route(app, req);
         Assert.assertEquals(200, r.status());
-    }*/
+    }
 
     @Test
     public void test_c_getTypes() {

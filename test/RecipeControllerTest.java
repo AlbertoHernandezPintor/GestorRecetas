@@ -14,7 +14,7 @@ import play.test.WithApplication;
 //Permite definir el orden de los test
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RecipeControllerTest extends WithApplication {
-    private String recipeTestName = "recipeTest7";
+    private String recipeTestName = "recipeTest";
 
     @Test
     public void test_a_createRecipe() {
@@ -112,14 +112,14 @@ public class RecipeControllerTest extends WithApplication {
         Assert.assertEquals(200, r.status());
     }
 
-    /*@Test
+    @Test
     public void test_e_deleteRecipe() {
         Http.RequestBuilder req = Helpers.fakeRequest()
                 .method("DELETE")
                 .uri("http://localhost:9000/recipe?name=" + this.recipeTestName)
-                .header("Authorization", "userToken");
+                .header("Authentication", "adminToken");
 
         Result r = Helpers.route(app, req);
         Assert.assertEquals(200, r.status());
-    }*/
+    }
 }
