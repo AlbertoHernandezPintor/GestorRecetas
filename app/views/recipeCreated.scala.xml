@@ -1,4 +1,4 @@
-@(recipe: Recipe, messages: play.i18n.Messages)
+@(recipe: Recipe,  messages: play.i18n.Messages)
 <?xml version="1.0" encoding="utf-8" ?>
 <content>
     <success>true</success>

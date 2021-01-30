@@ -1,7 +1,6 @@
 package controllers;
 
 import actions.ActionAuthentication;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.DuplicateKeyException;
@@ -16,7 +15,6 @@ import play.data.FormFactory;
 import play.twirl.api.Content;
 import javax.inject.Inject;
 import java.util.*;
-
 import views.xml.*;
 
 public class RecipeController extends Controller {

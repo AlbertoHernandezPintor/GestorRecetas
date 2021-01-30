@@ -1,4 +1,5 @@
 error.message-repeated-recipe           =   La receta {0} ya existe
+error.message-repeated-user             =   El usuario {0} ya existe
 error.unsupported-format                =   Formato no soportado
 error.type-not-allowed                  =   Tipo de la receta no permitido, a continuación se muestran los tipos permitidos
 error.search-factor                     =   No se ha elegido ningún factor de búsqueda
@@ -30,3 +31,10 @@ info.message-recipe-modified            =   La receta {0} ha sido modificada con
 info.message-recipe-deleted             =   La receta {0} ha sido eliminada con éxito
 info.message-type-created               =   El tipo {0} ha sido creado con éxito
 info.message-type-deleted               =   El tipo {0} ha sido eliminado con éxito
+
+error.message-type-user                 =   El tipo de usuario {0} no existe, el tipo puede ser 'user' o 'admin'
+
+error.user-username-required            =   El nombre de usuario es obligatorio
+error.user-type-required                =   El tipo de usuario es obligatorio
+
+info.message-user-created               =   El usuario {0} se ha registrado con éxito

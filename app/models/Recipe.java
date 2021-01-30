@@ -7,7 +7,6 @@ import play.data.validation.Constraints;
 import play.data.validation.Constraints.Pattern;
 import play.data.validation.Constraints.Required;
 import validators.*;
-
 import javax.persistence.*;
 
 @Entity

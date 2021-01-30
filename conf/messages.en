@@ -1,4 +1,5 @@
 error.message-repeated-recipe           =   The recipe {0} already exists
+error.message-repeated-user             =   The user {0} already exists
 error.unsupported-format                =   Unsupported format
 error.type-not-allowed                  =   Recipe type not allowed, the allowed types are shown below
 error.search-factor                     =   No search factor has been chosen
@@ -30,3 +31,10 @@ info.message-recipe-modified            =   The recipe {0} has been modified suc
 info.message-recipe-deleted             =   The recipe {0} has been deleted successfully
 info.message-type-created               =   The type {0} has been created successfully
 info.message-type-deleted               =   The type {0} has been deleted successfully
+
+error.message-type-user                 =  User type {0} does not exist, user type can be 'user' or 'admin'
+
+error.user-username-required            =   Username is required
+error.user-type-required                =   User type is required
+
+info.message-user-created               =   Username {0} has been registered successfully

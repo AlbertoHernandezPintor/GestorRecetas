@@ -1,0 +1,7 @@
+@(user: User,  messages: play.i18n.Messages, token: String)
+<?xml version="1.0" encoding="utf-8" ?>
+<content>
+    <success>true</success>
+    <message>@messages.at("info.message-user-created", user.getUsername())</message>
+    <token>@token</token>
+</content>
