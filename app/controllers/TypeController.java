@@ -1,6 +1,6 @@
 package controllers;
 
-import actions.ActionAuthentication;
+import actions.*;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.DuplicateKeyException;
@@ -36,7 +36,7 @@ public class TypeController extends Controller {
         this.messagesApi = messagesApi;
     }
 
-    @Security.Authenticated(ActionAuthentication.class)
+    @Security.Authenticated(AdminActionAuthentication.class)
     public Result createType(Http.Request request) {
         Result response;
         Type type;
@@ -56,7 +56,7 @@ public class TypeController extends Controller {
         } catch(DuplicateKeyException e) {
             ObjectNode result = Json.newObject();
             result.put("success", false);
-            result.put("message", messages.at("error.message-repeated-type"));
+            result.put("message", messages.at("error.message-repeated-type", type.getName()));
             return Results.status(CONFLICT, result);
         }
 
@@ -112,7 +112,8 @@ public class TypeController extends Controller {
         }
         return response;
     }
-    @Security.Authenticated(ActionAuthentication.class)
+
+    @Security.Authenticated(AdminActionAuthentication.class)
     public Result deleteType(Http.Request request) {
         Result response;
 

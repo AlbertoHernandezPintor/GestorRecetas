@@ -17,6 +17,8 @@ public class User extends Model {
     @Constraints.Required(message="error.user-type-required")
     private String type;
 
+    private String token;
+
     public User() {
 
     }
@@ -35,5 +37,17 @@ public class User extends Model {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getToken() { return token; }
+
+    public void setToken(String token) { this.token = token; }
+
+    public static User selectUserByToken(String token) {
+        return find.query().where().eq("token", token).findOne();
+    }
+
+    public static User selectUserByUsername(String username) {
+        return find.query().where().eq("username", username).findOne();
     }
 }

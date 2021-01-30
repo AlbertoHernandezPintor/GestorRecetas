@@ -1,6 +1,6 @@
 package controllers;
 
-import actions.ActionAuthentication;
+import actions.*;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.ebean.DuplicateKeyException;
@@ -32,6 +32,7 @@ public class RecipeController extends Controller {
         this.messagesApi = messagesApi;
     }
 
+    @Security.Authenticated(ActionAuthentication.class)
     public Result createRecipe(Http.Request request) {
         Result response;
         Recipe recipe;
@@ -188,6 +189,7 @@ public class RecipeController extends Controller {
         return response;
     }
 
+
     public Result patchRecipe(Http.Request request) {
         Result response;
         Recipe recipe;
@@ -256,7 +258,7 @@ public class RecipeController extends Controller {
         return response;
     }
 
-    @Security.Authenticated(ActionAuthentication.class)
+    @Security.Authenticated(AdminActionAuthentication.class)
     public Result deleteRecipe(Http.Request request) {
         Result response;
         Optional<String> recipeName = request.queryString("name");

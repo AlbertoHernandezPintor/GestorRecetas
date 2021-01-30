@@ -10,12 +10,12 @@ import models.User;
 import javax.inject.Inject;
 import java.util.Optional;
 
-public class ActionAuthentication extends Security.Authenticator {
+public class AdminActionAuthentication extends Security.Authenticator {
 
     private final play.i18n.MessagesApi messagesApi;
 
     @Inject
-    public ActionAuthentication(MessagesApi messagesApi) {
+    public AdminActionAuthentication(MessagesApi messagesApi) {
         this.messagesApi = messagesApi;
     }
 
@@ -23,7 +23,7 @@ public class ActionAuthentication extends Security.Authenticator {
     public Optional<String> getUsername(Http.Request req) {
         Optional<String> token = req.header("Authentication");
 
-        if (!token.isPresent()) {
+        if (!token.isPresent() || !token.get().startsWith("admin")) {
             return Optional.empty();
         } else {
             User user = User.selectUserByToken(token.get());

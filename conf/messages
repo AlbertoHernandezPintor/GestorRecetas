@@ -33,8 +33,10 @@ info.message-type-created               =   El tipo {0} ha sido creado con éxit
 info.message-type-deleted               =   El tipo {0} ha sido eliminado con éxito
 
 error.message-type-user                 =   El tipo de usuario {0} no existe, el tipo puede ser 'user' o 'admin'
+error.user-not-exists                   =   El usuario {0} no existe.
 
 error.user-username-required            =   El nombre de usuario es obligatorio
 error.user-type-required                =   El tipo de usuario es obligatorio
 
 info.message-user-created               =   El usuario {0} se ha registrado con éxito
+info.message-user-deleted               =   El usuario {0} se ha eliminado con éxito

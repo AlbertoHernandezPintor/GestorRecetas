@@ -33,8 +33,10 @@ info.message-type-created               =   The type {0} has been created succes
 info.message-type-deleted               =   The type {0} has been deleted successfully
 
 error.message-type-user                 =  User type {0} does not exist, user type can be 'user' or 'admin'
+error.user-not-exists                   =   User {0} doesn't exists.
 
 error.user-username-required            =   Username is required
 error.user-type-required                =   User type is required
 
 info.message-user-created               =   Username {0} has been registered successfully
+info.message-user-deleted               =   Username {0} has been deleted successfully
