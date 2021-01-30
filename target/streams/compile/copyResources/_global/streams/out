@@ -1,4 +1,7 @@
 [0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/conf/logback.xml,/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/target/scala-2.13/classes/logback.xml)[0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/conf/application.conf,/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/target/scala-2.13/classes/application.conf)[0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/conf/routes,/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/target/scala-2.13/classes/routes)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/davidmsl/Documents/Gestor recetas/conf/logback.xml,/Users/davidmsl/Documents/Gestor recetas/target/scala-2.13/classes/logback.xml)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/davidmsl/Documents/Gestor recetas/conf/messages,/Users/davidmsl/Documents/Gestor recetas/target/scala-2.13/classes/messages)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/davidmsl/Documents/Gestor recetas/conf/messages.en,/Users/davidmsl/Documents/Gestor recetas/target/scala-2.13/classes/messages.en)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/davidmsl/Documents/Gestor recetas/conf/application.conf,/Users/davidmsl/Documents/Gestor recetas/target/scala-2.13/classes/application.conf)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/davidmsl/Documents/Gestor recetas/conf/routes,/Users/davidmsl/Documents/Gestor recetas/target/scala-2.13/classes/routes)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/Users/davidmsl/Documents/Gestor recetas/conf/evolutions/default/1.sql,/Users/davidmsl/Documents/Gestor recetas/target/scala-2.13/classes/evolutions/default/1.sql)[0m

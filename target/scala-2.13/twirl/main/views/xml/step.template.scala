@@ -21,22 +21,25 @@ import play.data._
 import play.core.j.PlayFormsMagicForJava._
 import scala.jdk.CollectionConverters._
 
-object step extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.XmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.XmlFormat.Appendable]](play.twirl.api.XmlFormat) with _root_.play.twirl.api.Template1[String,play.twirl.api.XmlFormat.Appendable] {
+object step extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.XmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.XmlFormat.Appendable]](play.twirl.api.XmlFormat) with _root_.play.twirl.api.Template1[Step,play.twirl.api.XmlFormat.Appendable] {
 
   /**/
-  def apply/*1.2*/(step: String):play.twirl.api.XmlFormat.Appendable = {
+  def apply/*1.2*/(step: Step):play.twirl.api.XmlFormat.Appendable = {
     _display_ {
       {
 
 
-Seq[Any](format.raw/*2.1*/("""<step>"""),_display_(/*2.8*/step),format.raw/*2.12*/("""</step>"""))
+Seq[Any](format.raw/*2.1*/("""<step>
+    <name>"""),_display_(/*3.12*/step/*3.16*/.getName()),format.raw/*3.26*/("""</name>
+    <description>"""),_display_(/*4.19*/step/*4.23*/.getDescription()),format.raw/*4.40*/("""</description>
+</step>"""))
       }
     }
   }
 
-  def render(step:String): play.twirl.api.XmlFormat.Appendable = apply(step)
+  def render(step:Step): play.twirl.api.XmlFormat.Appendable = apply(step)
 
-  def f:((String) => play.twirl.api.XmlFormat.Appendable) = (step) => apply(step)
+  def f:((Step) => play.twirl.api.XmlFormat.Appendable) = (step) => apply(step)
 
   def ref: this.type = this
 
@@ -45,11 +48,11 @@ Seq[Any](format.raw/*2.1*/("""<step>"""),_display_(/*2.8*/step),format.raw/*2.12
 
               /*
                   -- GENERATED --
-                  DATE: 2020-12-20T20:09:24.599
-                  SOURCE: /Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/app/views/step.scala.xml
-                  HASH: 5699e212392efd107f37769363b7edf6d3ada9f0
-                  MATRIX: 900->1|1007->16|1039->23|1063->27
-                  LINES: 27->1|32->2|32->2|32->2
+                  DATE: 2021-01-30T16:57:28.922
+                  SOURCE: /Users/davidmsl/Documents/Gestor recetas/app/views/step.scala.xml
+                  HASH: 919b8ba558ac9a19d3aa5cbf500b04a4d8d2137b
+                  MATRIX: 898->1|1003->14|1047->32|1059->36|1089->46|1141->72|1153->76|1190->93
+                  LINES: 27->1|32->2|33->3|33->3|33->3|34->4|34->4|34->4
                   -- GENERATED --
               */
           

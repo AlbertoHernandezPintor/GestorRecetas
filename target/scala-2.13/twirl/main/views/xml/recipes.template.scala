@@ -50,8 +50,8 @@ Seq[Any](format.raw/*2.1*/("""<?xml version="1.0" encoding="utf-8" ?>
 
               /*
                   -- GENERATED --
-                  DATE: 2020-12-20T20:23:31.599
-                  SOURCE: /Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/app/views/recipes.scala.xml
+                  DATE: 2021-01-30T16:57:28.874
+                  SOURCE: /Users/davidmsl/Documents/Gestor recetas/app/views/recipes.scala.xml
                   HASH: 7e6328112dbc2c14c5769264c1841b3f89a18692
                   MATRIX: 909->1|1025->25|1105->80|1137->97|1175->98|1211->108|1240->117|1275->123|1302->124
                   LINES: 27->1|32->2|34->4|34->4|34->4|35->5|35->5|36->6|37->7

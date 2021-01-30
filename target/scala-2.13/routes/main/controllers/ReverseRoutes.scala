@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/conf/routes
-// @DATE:Sun Dec 20 20:23:31 CET 2020
+// @SOURCE:/Users/davidmsl/Documents/Gestor recetas/conf/routes
+// @DATE:Sat Jan 30 16:57:28 CET 2021
 
 import play.api.mvc.Call
 
@@ -18,10 +18,16 @@ package controllers {
     }
 
   
-    // @LINE:8
+    // @LINE:9
     def deleteRecipe(): Call = {
       
       Call("DELETE", _prefix + { _defaultPrefix } + "recipe")
+    }
+  
+    // @LINE:8
+    def patchRecipe(): Call = {
+      
+      Call("PATCH", _prefix + { _defaultPrefix } + "recipe")
     }
   
     // @LINE:6
@@ -30,16 +36,58 @@ package controllers {
       Call("POST", _prefix + { _defaultPrefix } + "recipe")
     }
   
-    // @LINE:9
+    // @LINE:7
+    def getRecipe(): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "recipe")
+    }
+  
+    // @LINE:10
     def getRecipes(): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "recipes")
     }
   
-    // @LINE:7
-    def getRecipe(): Call = {
+  }
+
+  // @LINE:11
+  class ReverseTypeController(_prefix: => String) {
+    def _defaultPrefix: String = {
+      if (_prefix.endsWith("/")) "" else "/"
+    }
+
+  
+    // @LINE:11
+    def createType(): Call = {
       
-      Call("GET", _prefix + { _defaultPrefix } + "recipe")
+      Call("POST", _prefix + { _defaultPrefix } + "type")
+    }
+  
+    // @LINE:12
+    def getTypes(): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "types")
+    }
+  
+    // @LINE:13
+    def deleteType(): Call = {
+      
+      Call("DELETE", _prefix + { _defaultPrefix } + "type")
+    }
+  
+  }
+
+  // @LINE:14
+  class ReverseUserController(_prefix: => String) {
+    def _defaultPrefix: String = {
+      if (_prefix.endsWith("/")) "" else "/"
+    }
+
+  
+    // @LINE:14
+    def registerUser(): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "user")
     }
   
   }

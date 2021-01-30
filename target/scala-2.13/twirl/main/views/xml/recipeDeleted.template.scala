@@ -21,10 +21,10 @@ import play.data._
 import play.core.j.PlayFormsMagicForJava._
 import scala.jdk.CollectionConverters._
 
-object recipeDeleted extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.XmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.XmlFormat.Appendable]](play.twirl.api.XmlFormat) with _root_.play.twirl.api.Template1[Recipe,play.twirl.api.XmlFormat.Appendable] {
+object recipeDeleted extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.XmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.XmlFormat.Appendable]](play.twirl.api.XmlFormat) with _root_.play.twirl.api.Template2[Recipe,play.i18n.Messages,play.twirl.api.XmlFormat.Appendable] {
 
   /**/
-  def apply/*1.2*/(recipe: Recipe):play.twirl.api.XmlFormat.Appendable = {
+  def apply/*1.2*/(recipe: Recipe, messages: play.i18n.Messages):play.twirl.api.XmlFormat.Appendable = {
     _display_ {
       {
 
@@ -32,15 +32,15 @@ object recipeDeleted extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.
 Seq[Any](format.raw/*2.1*/("""<?xml version="1.0" encoding="utf-8" ?>
 <content>
     <success>true</success>
-    <message>La receta """),_display_(/*5.25*/recipe/*5.31*/.getName()),format.raw/*5.41*/(""" """),format.raw/*5.42*/("""ha sido eliminada con éxito</message>
+    <message>"""),_display_(/*5.15*/messages/*5.23*/.at("info.message-recipe-deleted", recipe.getName())),format.raw/*5.75*/("""</message>
 </content>"""))
       }
     }
   }
 
-  def render(recipe:Recipe): play.twirl.api.XmlFormat.Appendable = apply(recipe)
+  def render(recipe:Recipe,messages:play.i18n.Messages): play.twirl.api.XmlFormat.Appendable = apply(recipe,messages)
 
-  def f:((Recipe) => play.twirl.api.XmlFormat.Appendable) = (recipe) => apply(recipe)
+  def f:((Recipe,play.i18n.Messages) => play.twirl.api.XmlFormat.Appendable) = (recipe,messages) => apply(recipe,messages)
 
   def ref: this.type = this
 
@@ -49,11 +49,11 @@ Seq[Any](format.raw/*2.1*/("""<?xml version="1.0" encoding="utf-8" ?>
 
               /*
                   -- GENERATED --
-                  DATE: 2020-12-20T19:39:19.478
-                  SOURCE: /Volumes/LaCie/Alberto/Máster/Tecnologías del lado del servidor/Ejercicios/GestionRecetas/app/views/recipeDeleted.scala.xml
-                  HASH: 7b6db4f72bbcf279ed3e0684ee1ff5b3aaa0fa86
-                  MATRIX: 909->1|1018->18|1146->120|1160->126|1190->136|1218->137
-                  LINES: 27->1|32->2|35->5|35->5|35->5|35->5
+                  DATE: 2021-01-30T16:57:29.132
+                  SOURCE: /Users/davidmsl/Documents/Gestor recetas/app/views/recipeDeleted.scala.xml
+                  HASH: cb7f3b17db218705fa202f98cd95b021df2a3f3e
+                  MATRIX: 928->1|1067->48|1185->140|1201->148|1273->200
+                  LINES: 27->1|32->2|35->5|35->5|35->5
                   -- GENERATED --
               */
           

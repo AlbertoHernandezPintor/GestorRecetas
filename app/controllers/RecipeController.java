@@ -127,48 +127,56 @@ public class RecipeController extends Controller {
 
             recipeFinded = Recipe.selectRecipe(name);
 
-            if (request.accepts("application/xml")) {
-                Content content = recipe.render(recipeFinded);
-                response = Results.ok(content);
-            } else if (request.accepts("application/json")) {
-                ObjectNode result = Json.newObject();
-                result.put("name", recipeFinded.getName());
-                result.put("type", recipeFinded.getType());
-                result.put("time", recipeFinded.getTime());
-                result.put("dififculty", recipeFinded.getDifficulty());
 
-                ArrayNode ingredients = Json.newArray();
-                for(Ingredient ingredient : recipeFinded.getIngredients()) {
-                    ObjectNode ingredientJson = Json.newObject();
-                    ingredientJson.put("name", ingredient.getName());
-                    ingredientJson.put("type", ingredient.getType());
-                    ingredients.add(ingredientJson);
-                }
-                result.put("ingredients", ingredients);
+            if(null != recipeFinded) {
+                if (request.accepts("application/xml")) {
+                    Content content = recipe.render(recipeFinded);
+                    response = Results.ok(content);
+                } else if (request.accepts("application/json")) {
+                    ObjectNode result = Json.newObject();
+                    result.put("name", recipeFinded.getName());
+                    result.put("type", recipeFinded.getType());
+                    result.put("time", recipeFinded.getTime());
+                    result.put("dififculty", recipeFinded.getDifficulty());
 
-               ArrayNode allergens = Json.newArray();
-                for(Allergen allergen : recipeFinded.getAllergens()) {
-                    ObjectNode allergenJson = Json.newObject();
-                    allergenJson.put("name", allergen.getName());
-                    allergenJson.put("diseases", allergen.getDiseases());
-                    allergens.add(allergenJson);
-                }
-                result.put("allergens", allergens);
+                    ArrayNode ingredients = Json.newArray();
+                    for(Ingredient ingredient : recipeFinded.getIngredients()) {
+                        ObjectNode ingredientJson = Json.newObject();
+                        ingredientJson.put("name", ingredient.getName());
+                        ingredientJson.put("type", ingredient.getType());
+                        ingredients.add(ingredientJson);
+                    }
+                    result.put("ingredients", ingredients);
 
-                ArrayNode steps = Json.newArray();
-                for(Step step : recipeFinded.getSteps()) {
-                    ObjectNode stepJson = Json.newObject();
-                    stepJson.put("name", step.getName());
-                    stepJson.put("description", step.getDescription());
-                    steps.add(stepJson);
+                    ArrayNode allergens = Json.newArray();
+                    for(Allergen allergen : recipeFinded.getAllergens()) {
+                        ObjectNode allergenJson = Json.newObject();
+                        allergenJson.put("name", allergen.getName());
+                        allergenJson.put("diseases", allergen.getDiseases());
+                        allergens.add(allergenJson);
+                    }
+                    result.put("allergens", allergens);
+
+                    ArrayNode steps = Json.newArray();
+                    for(Step step : recipeFinded.getSteps()) {
+                        ObjectNode stepJson = Json.newObject();
+                        stepJson.put("name", step.getName());
+                        stepJson.put("description", step.getDescription());
+                        steps.add(stepJson);
+                    }
+                    result.put("steps", steps);
+                    response = Results.ok(result);
+                } else {
+                    ObjectNode result = Json.newObject();
+                    result.put("success", false);
+                    result.put("message", messages.at("error.unsupported-format"));
+                    response = Results.badRequest(result);
                 }
-                result.put("steps", steps);
-                response = Results.ok(result);
             } else {
                 ObjectNode result = Json.newObject();
                 result.put("success", false);
-                result.put("message", messages.at("error.unsupported-format"));
-                response = Results.badRequest(result);
+                result.put("message", messages.at("error.recipe-not-exist", name));
+                response = Results.notFound(result);
             }
         } else {
             ObjectNode result = Json.newObject();
