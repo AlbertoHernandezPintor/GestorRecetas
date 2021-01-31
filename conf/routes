@@ -13,6 +13,8 @@ GET         /types      controllers.TypeController.getTypes(request: Request)
 DELETE      /type       controllers.TypeController.deleteType(request: Request)
 POST        /user       controllers.UserController.registerUser(request: Request)
 DELETE      /user       controllers.UserController.deleteUser(request: Request)
+POST        /history    controllers.FavoritesHistoryController.addRecipeToFavorites(request: Request)
+GET         /history    controllers.FavoritesHistoryController.getRecipesFromFavoritesHistory(request: Request)
 
 # Map static resources from the /public folder to the /assets URL path
 #GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

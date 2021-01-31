@@ -3,8 +3,11 @@ package models;
 import io.ebean.Finder;
 import io.ebean.Model;
 import play.data.validation.Constraints;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class User extends Model {
@@ -18,6 +21,9 @@ public class User extends Model {
     private String type;
 
     private String token;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    public FavoritesHistory favoritesHistory;
 
     public User() {
 
@@ -42,6 +48,10 @@ public class User extends Model {
     public String getToken() { return token; }
 
     public void setToken(String token) { this.token = token; }
+
+    public FavoritesHistory getFavoritesHistory() { return favoritesHistory; }
+
+    public void setFavoritesHistory(FavoritesHistory favoritesHistory) { this.favoritesHistory = favoritesHistory; }
 
     public static User selectUserByToken(String token) {
         return find.query().where().eq("token", token).findOne();

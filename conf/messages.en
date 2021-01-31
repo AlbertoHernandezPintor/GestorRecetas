@@ -29,6 +29,8 @@ error.Unauthorized                      =   Unauthenticated user or role not all
 info.message-recipe-created             =   The recipe {0} has been created successfully
 info.message-recipe-modified            =   The recipe {0} has been modified successfully
 info.message-recipe-deleted             =   The recipe {0} has been deleted successfully
+info.message-recipe-added-favorites     =   The recipe {0} has been added to your favorites' history successfully
+info.message-recipe-added               =   The recipe {0} has been added to your favorites history before
 info.message-type-created               =   The type {0} has been created successfully
 info.message-type-deleted               =   The type {0} has been deleted successfully
 

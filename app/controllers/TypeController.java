@@ -78,6 +78,7 @@ public class TypeController extends Controller {
         return response;
     }
 
+    @Security.Authenticated(ActionAuthentication.class)
     public Result getTypes(Http.Request request) {
         Result response;
 

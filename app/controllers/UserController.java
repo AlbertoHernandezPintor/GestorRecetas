@@ -13,6 +13,9 @@ import play.mvc.*;
 import play.twirl.api.Content;
 import javax.inject.Inject;
 import views.xml.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserController extends Controller {
@@ -64,6 +67,15 @@ public class UserController extends Controller {
         }
 
         user.setToken(token);
+
+
+        List<Recipe> recipes = new ArrayList<>();
+        FavoritesHistory favoritesHistory = new FavoritesHistory();
+        favoritesHistory.setUser(user);
+        favoritesHistory.setRecipes(recipes);
+        favoritesHistory.update();
+
+        user.setFavoritesHistory(favoritesHistory);
         user.save();
         System.out.println("Ya se ha guardado el usuario con el token: " + user.getToken());
         if (request.accepts("application/xml")) {

@@ -114,6 +114,7 @@ public class RecipeController extends Controller {
         return response;
     }
 
+    @Security.Authenticated(ActionAuthentication.class)
     public Result getRecipe(Http.Request request) {
         Result response;
 
@@ -190,6 +191,7 @@ public class RecipeController extends Controller {
     }
 
 
+    @Security.Authenticated(ActionAuthentication.class)
     public Result patchRecipe(Http.Request request) {
         Result response;
         Recipe recipe;
@@ -302,6 +304,7 @@ public class RecipeController extends Controller {
         return response;
     }
 
+    @Security.Authenticated(ActionAuthentication.class)
     public Result getRecipes(Http.Request request) {
         Result response;
 

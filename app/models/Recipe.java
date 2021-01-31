@@ -41,6 +41,9 @@ public class Recipe extends Model {
     @Constraints.ValidateWith(StepValidator.class)
     private List<Step> steps;
 
+    @ManyToMany(mappedBy = "recipes")
+    public List<FavoritesHistory> favoritesHistories;
+
     public Recipe() {
 
     }
@@ -51,6 +54,14 @@ public class Recipe extends Model {
 
     public void setAllergens(List<Allergen> allergens) {
         this.allergens = allergens;
+    }
+
+    public List<FavoritesHistory> getFavoritesHistories() {
+        return favoritesHistories;
+    }
+
+    public void setFavoritesHistories(List<FavoritesHistory> favoritesHistories) {
+        this.favoritesHistories = favoritesHistories;
     }
 
     public String getName() {

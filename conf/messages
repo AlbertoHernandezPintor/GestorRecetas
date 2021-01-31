@@ -29,6 +29,8 @@ error.Unauthorized                      =   Usuario no autenticado o rol no perm
 info.message-recipe-created             =   La receta {0} ha sido creada con éxito
 info.message-recipe-modified            =   La receta {0} ha sido modificada con éxito
 info.message-recipe-deleted             =   La receta {0} ha sido eliminada con éxito
+info.message-recipe-added-favorites     =   La receta {0} ha sido añadida a su historial de favoritos con éxito
+info.message-recipe-added               =   La receta {0} ya ha sido añadida antes a su historial de favoritos
 info.message-type-created               =   El tipo {0} ha sido creado con éxito
 info.message-type-deleted               =   El tipo {0} ha sido eliminado con éxito
 
