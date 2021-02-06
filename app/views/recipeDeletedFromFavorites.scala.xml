@@ -1,0 +1,6 @@
+@(recipe: Recipe,  messages: play.i18n.Messages)
+        <?xml version="1.0" encoding="utf-8" ?>
+<content>
+    <success>true</success>
+    <message>@messages.at("info.message-recipe-deleted-favorites", recipe.getName())</message>
+</content>
